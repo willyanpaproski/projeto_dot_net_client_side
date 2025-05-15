@@ -1,0 +1,25 @@
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.btn-novo,
+.btn-recarregar {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #2f3b52;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-recarregar {
+  background-color: #2f3b52;
+}
+
+.btn-novo:hover,
+.btn-recarregar:hover {
+  filter: brightness(1.1);
+}

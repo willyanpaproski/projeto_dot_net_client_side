@@ -1,0 +1,47 @@
+<div class="sidenav" [ngClass]="isLeftSidebarCollapsed ? 'sidenav-collapsed' : ''">
+  <div class="logo-container">
+    <button class="logo" (click)="toggleColapse()">
+      <i class="pi pi-bars"></i>
+    </button>
+    <div class="logo-text" *ngIf="!isLeftSidebarCollapsed">App</div>
+    <button class="btn-close" (click)="toggleColapse()" *ngIf="!isLeftSidebarCollapsed">
+      <i class="pi pi-times" style="color: white;"></i>
+    </button>
+  </div>
+
+  <ul class="sidenav-nav">
+    <li class="sidenav-nav-item" *ngFor="let item of items">
+      <ng-container *ngIf="!item.children; else submenu">
+        <a class="sidenav-nav-link"
+           (click)="openModal(item.component, item.label)"
+           [routerLinkActive]="['active']"
+           [routerLinkActiveOptions]="{ exact: true }">
+          <i class="sidenav-link-icon" [class]="item.icon"></i>
+          <span class="sidenav-link-text" *ngIf="!isLeftSidebarCollapsed">{{ item.label }}</span>
+        </a>
+      </ng-container>
+
+      <ng-template #submenu>
+        <div class="sidenav-nav-link submenu-header" (click)="toggleModule(item.label)">
+          <i class="sidenav-link-icon" [class]="item.icon"></i>
+          <span class="sidenav-link-text" *ngIf="!isLeftSidebarCollapsed">{{ item.label }}</span>
+        </div>
+
+        <ul class="sidenav-submenu" *ngIf="selectedModule === item.label">
+          <li class="sidenav-nav-subitem" *ngFor="let child of item.children">
+            <a class="sidenav-nav-sublink"
+               (click)="openModal(child.component, child.label)"
+               [routerLinkActive]="['active']"
+               [routerLinkActiveOptions]="{ exact: true }">
+              <span class="sidenav-link-text" *ngIf="!isLeftSidebarCollapsed">{{ child.label }}</span>
+            </a>
+          </li>
+        </ul>
+      </ng-template>
+    </li>
+  </ul>
+
+  <app-modal *ngIf="showModal" [title]="modalTitle" (closeModal)="closeModal()">
+    <ng-container *ngComponentOutlet="modalComponent"></ng-container>
+  </app-modal>
+</div>

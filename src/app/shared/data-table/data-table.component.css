@@ -1,0 +1,19 @@
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+  position: relative;
+}
+
+
+th {
+  position: relative;
+  user-select: none;
+  border-right: 1px solid #e0e0e0;
+}
+

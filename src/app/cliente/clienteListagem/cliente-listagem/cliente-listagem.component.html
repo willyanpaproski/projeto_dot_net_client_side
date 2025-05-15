@@ -1,0 +1,15 @@
+<div class="toolbar">
+  <button class="btn-novo" (click)="abrirModalNovoCliente()">Novo</button>
+  <button class="btn-recarregar" (click)="carregarClientes()">
+    <i class="pi pi-sync"></i>
+  </button>
+</div>
+
+<app-modal *ngIf="showModal" [title]="modalTitle" (closeModal)="fecharModal()">
+  <ng-container *ngComponentOutlet="modalComponent"></ng-container>
+</app-modal>
+
+<app-data-table
+  [displayedColumns]="displayedColumns"
+  [dataSource]="dataSource">
+</app-data-table>

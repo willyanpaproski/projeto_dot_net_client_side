@@ -1,0 +1,8 @@
+{
+  "/graphql": {
+    "target": "https://localhost:5250",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

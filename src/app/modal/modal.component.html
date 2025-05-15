@@ -1,0 +1,17 @@
+<div class="modal-overlay">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <span class="drag-handle" (mousedown)="onDragStart($event)" style="cursor: move; display: flex; justify-content: space-between; align-items: center; width: 100%; height: 30px; background-color:#2f3b52; border-top-left-radius:5px; border-top-right-radius:5px; padding: 0 10px;">
+        <span>{{ title }}</span>
+        <button class="btn-close" (click)="close()">
+          <i class="pi pi-times" style="color: white;"></i>
+        </button>
+      </span>
+    </div>
+    <div class="modal-body" *ngIf="!isMinimized">
+      <div class="modal-scroll-x">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+</div>

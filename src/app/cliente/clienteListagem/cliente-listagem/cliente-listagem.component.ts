@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cliente-listagem',
-  imports: [DataTableComponent, ModalComponent, CommonModule, ClienteCadastroComponent],
+  imports: [DataTableComponent, ModalComponent, CommonModule],
   templateUrl: './cliente-listagem.component.html',
   styleUrl: './cliente-listagem.component.css'
 })

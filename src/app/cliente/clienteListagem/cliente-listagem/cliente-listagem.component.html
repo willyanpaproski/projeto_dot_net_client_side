@@ -6,7 +6,7 @@
 </div>
 
 <app-modal *ngIf="showModal" [title]="modalTitle" (closeModal)="fecharModal()">
-  <ng-container *ngComponentOutlet="modalComponent"></ng-container>
+  <ng-container *ngComponentOutlet="modalComponent; injector: modalInjector"></ng-container>
 </app-modal>
 
 <app-data-table

@@ -12,6 +12,8 @@ import { FilialCadastroComponent } from '../../filialCadastro/filial-cadastro/fi
 import { ModalComponent } from '../../../modal/modal.component';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Injector } from '@angular/core';
+import { FILIAL_DATA } from '../../filialCadastro/filial-cadastro/filial-cadastro.component';
 
 @Component({
   selector: 'app-filial-listagem',
@@ -44,8 +46,9 @@ export class FilialListagemComponent implements OnInit {
   showModal = false;
   modalTitle = '';
   modalComponent: any;
+  modalInjector: Injector | undefined;
 
-  constructor(private apollo: Apollo, private http: HttpClient) {}
+  constructor(private apollo: Apollo, private http: HttpClient, private injector: Injector) {}
 
   ngOnInit(): void {
     this.carregarFiliais();
@@ -102,6 +105,12 @@ export class FilialListagemComponent implements OnInit {
         this.modalTitle = 'Editar Filial';
         this.modalComponent = FilialCadastroComponent;
         this.showModal = true;
+        this.modalInjector = Injector.create({
+          providers: [
+            { provide: FILIAL_DATA, useValue: filial }
+          ],
+          parent: this.injector
+        });
       },
       error: (error) => {
         console.error('Erro ao buscar filial: ', error);
@@ -117,6 +126,7 @@ export class FilialListagemComponent implements OnInit {
 
   fecharModal(): void {
     this.showModal = false;
+    this.modalInjector = undefined;
     this.carregarFiliais();
   }
 }

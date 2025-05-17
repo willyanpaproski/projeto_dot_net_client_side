@@ -12,6 +12,8 @@ import { EmpresaCadastroComponent } from '../../empresaCadastro/empresa-cadastro
 import { ModalComponent } from '../../../modal/modal.component';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Injector } from '@angular/core';
+import { EMPRESA_DATA } from '../../empresaCadastro/empresa-cadastro/empresa-cadastro.component';
 
 @Component({
   selector: 'app-empresa-listagem',
@@ -43,8 +45,9 @@ export class EmpresaListagemComponent implements OnInit {
   showModal = false;
   modalTitle = '';
   modalComponent: any;
+  modalInjector: Injector | undefined;
 
-  constructor(private apollo: Apollo, private http: HttpClient) {}
+  constructor(private apollo: Apollo, private http: HttpClient, private injector: Injector) {}
 
   ngOnInit(): void {
     this.carregarEmpresas();
@@ -101,6 +104,12 @@ export class EmpresaListagemComponent implements OnInit {
         this.modalTitle = 'Editar Empresa';
         this.modalComponent = EmpresaCadastroComponent;
         this.showModal = true;
+        this.modalInjector = Injector.create({
+          providers: [
+            { provide: EMPRESA_DATA, useValue: empresa }
+          ],
+          parent: this.injector
+        });
       },
       error: (error) => {
         console.error('Erro ao buscar empresa: ', error);
@@ -116,6 +125,7 @@ export class EmpresaListagemComponent implements OnInit {
 
   fecharModal(): void {
     this.showModal = false;
+    this.modalInjector = undefined;
     this.carregarEmpresas();
   }
 }

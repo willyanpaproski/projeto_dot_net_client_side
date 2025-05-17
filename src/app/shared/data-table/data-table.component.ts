@@ -26,6 +26,8 @@ export class DataTableComponent implements AfterViewInit, OnChanges {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  selectedRow: any;
+
   ngAfterViewInit() {
     this.dataSourceTable.paginator = this.paginator;
     this.dataSourceTable.sort = this.sort;
@@ -43,5 +45,9 @@ export class DataTableComponent implements AfterViewInit, OnChanges {
 
   onRowDoubleClick(row: any): void {
     this.rowDoubleClick.emit(row);
+  }
+
+  onRowClick(row: any): void {
+    this.selectedRow = this.selectedRow === row ? null : row;
   }
 }

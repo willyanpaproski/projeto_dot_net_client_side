@@ -13,6 +13,8 @@ import { ClienteCadastroComponent } from '../../clienteCadastro/cliente-cadastro
 import { ModalComponent } from '../../../modal/modal.component';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Injector } from '@angular/core';
+import { CLIENTE_DATA } from '../../clienteCadastro/cliente-cadastro/cliente-cadastro.component'
 
 @Component({
   selector: 'app-cliente-listagem',
@@ -45,8 +47,9 @@ export class ClienteListagemComponent implements OnInit {
   showModal = false;
   modalTitle = '';
   modalComponent: any;
+  modalInjector: Injector | undefined;
 
-  constructor(private apollo: Apollo, private http: HttpClient) {}
+  constructor(private apollo: Apollo, private http: HttpClient, private injector: Injector) {}
 
   ngOnInit(): void {
     this.carregarClientes();
@@ -103,6 +106,12 @@ export class ClienteListagemComponent implements OnInit {
         this.modalTitle = 'Editar Cliente',
         this.modalComponent = ClienteCadastroComponent;
         this.showModal = true;
+        this.modalInjector = Injector.create({
+          providers: [
+            { provide: CLIENTE_DATA, useValue: cliente }
+          ],
+          parent: this.injector
+        });
       },
       error: (error) => {
         console.error(`Erro ao buscar cliente: `, error);
@@ -118,6 +127,7 @@ export class ClienteListagemComponent implements OnInit {
 
   fecharModal(): void {
     this.showModal = false;
+    this.modalInjector = undefined;
     this.carregarClientes();
   }
 }

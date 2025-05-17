@@ -1,5 +1,6 @@
 <div class="toolbar">
   <button class="btn-novo" (click)="abrirModalNovaFilial()">Novo</button>
+  <button class="btn-editar" [disabled]="!selectedRow" (click)="abrirModalEdicao(selectedRow)">Editar</button>
   <button class="btn-recarregar" (click)="carregarFiliais()">
     <i class="pi pi-sync"></i>
   </button>
@@ -12,5 +13,7 @@
 <app-data-table
   [displayedColumns]="displayedColumns"
   [dataSource]="dataSource"
+  [selectedRowInput]="selectedRow"
+  (rowClick)="onRowClick($event)"
   (rowDoubleClick)="abrirModalEdicao($event)">
 </app-data-table>

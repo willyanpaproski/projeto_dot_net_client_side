@@ -48,6 +48,8 @@ export class FilialListagemComponent implements OnInit {
   modalComponent: any;
   modalInjector: Injector | undefined;
 
+  selectedRow: any = null;
+
   constructor(private apollo: Apollo, private http: HttpClient, private injector: Injector) {}
 
   ngOnInit(): void {
@@ -127,6 +129,11 @@ export class FilialListagemComponent implements OnInit {
   fecharModal(): void {
     this.showModal = false;
     this.modalInjector = undefined;
+    this.selectedRow = null;
     this.carregarFiliais();
+  }
+
+  onRowClick(row: any): void {
+    this.selectedRow = row;
   }
 }

@@ -20,6 +20,8 @@ export class DataTableComponent implements AfterViewInit, OnChanges {
   @Input() displayedColumns: { key: string, label: string, width?: string, format?: (value: any) => string }[] = [];
   @Input() dataSource: any[] = [];
   @Output() rowDoubleClick = new EventEmitter<any>();
+  @Output() rowClick = new EventEmitter<any>();
+  @Input() selectedRowInput: any;
 
   dataSourceTable = new MatTableDataSource<any>();
 
@@ -37,6 +39,10 @@ export class DataTableComponent implements AfterViewInit, OnChanges {
     if (changes['dataSource']) {
       this.dataSourceTable.data = this.dataSource;
     }
+
+    if (changes['selectedRowInput']) {
+      this.selectedRow = changes['selectedRowInput'].currentValue;
+    }
   }
 
   get columnKeys(): string[] {
@@ -49,5 +55,6 @@ export class DataTableComponent implements AfterViewInit, OnChanges {
 
   onRowClick(row: any): void {
     this.selectedRow = this.selectedRow === row ? null : row;
+    this.rowClick.emit(row);
   }
 }

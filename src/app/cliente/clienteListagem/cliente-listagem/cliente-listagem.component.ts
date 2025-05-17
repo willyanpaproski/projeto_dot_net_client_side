@@ -49,6 +49,8 @@ export class ClienteListagemComponent implements OnInit {
   modalComponent: any;
   modalInjector: Injector | undefined;
 
+  selectedRow: any = null;
+
   constructor(private apollo: Apollo, private http: HttpClient, private injector: Injector) {}
 
   ngOnInit(): void {
@@ -128,6 +130,11 @@ export class ClienteListagemComponent implements OnInit {
   fecharModal(): void {
     this.showModal = false;
     this.modalInjector = undefined;
+    this.selectedRow = null;
     this.carregarClientes();
+  }
+
+  onRowClick(row: any): void {
+    this.selectedRow = row
   }
 }

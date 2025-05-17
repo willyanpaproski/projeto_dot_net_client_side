@@ -121,6 +121,21 @@ export class ClienteListagemComponent implements OnInit {
     });
   }
 
+  deletar(item: any): void {
+    const id = item?.id;
+    if (!id) return;
+
+    this.http.delete(`http://localhost:5250/api/cliente/${id}`).subscribe({
+      next: () => {
+        console.log('cliente deletado');
+        this.carregarClientes();
+      },
+      error: (error) => {
+        console.log('Erro ao deletar cliente: ', error);
+      }
+    });
+  }
+
   abrirModalNovoCliente(): void {
     this.modalTitle = 'Novo Cliente';
     this.modalComponent = ClienteCadastroComponent;

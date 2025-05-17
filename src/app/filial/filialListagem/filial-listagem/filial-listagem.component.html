@@ -1,6 +1,7 @@
 <div class="toolbar">
   <button class="btn-novo" (click)="abrirModalNovaFilial()">Novo</button>
   <button class="btn-editar" [disabled]="!selectedRow" (click)="abrirModalEdicao(selectedRow)">Editar</button>
+  <button class="btn-deletar" [disabled]="!selectedRow" (click)="deletar(selectedRow)">Deletar</button>
   <button class="btn-recarregar" (click)="carregarFiliais()">
     <i class="pi pi-sync"></i>
   </button>

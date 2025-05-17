@@ -119,6 +119,21 @@ export class EmpresaListagemComponent implements OnInit {
     });
   }
 
+  deletar(item: any): void {
+    const id = item?.id;
+    if (!id) return;
+
+    this.http.delete(`http://localhost:5250/api/empresa/${id}`).subscribe({
+      next: () => {
+        console.log('Empresa deletada');
+        this.carregarEmpresas();
+      },
+      error: (error) => {
+        alert(error?.error);
+      }
+    });
+  }
+
   abrirModalNovaEmpresa(): void {
     this.modalTitle = 'Nova Empresa';
     this.modalComponent = EmpresaCadastroComponent;

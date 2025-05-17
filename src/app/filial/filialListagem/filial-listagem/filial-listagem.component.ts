@@ -120,6 +120,21 @@ export class FilialListagemComponent implements OnInit {
     });
   }
 
+  deletar(item: any): void {
+    const id = item?.id;
+    if (!id) return;
+
+    this.http.delete(`http://localhost:5250/api/filial/${id}`).subscribe({
+      next: () => {
+        console.log('Filial deletada');
+        this.carregarFiliais();
+      },
+      error: (error) => {
+        alert(error?.error || 'Erro desconhecido');
+      }
+    });
+  }
+
   abrirModalNovaFilial(): void {
     this.modalTitle = 'Nova Empresa';
     this.modalComponent = FilialCadastroComponent;

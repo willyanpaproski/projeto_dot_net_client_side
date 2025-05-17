@@ -14,9 +14,7 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="columnKeys"></tr>
-    <tr mat-row *matRowDef="let row; columns: columnKeys;"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnKeys;" (dblclick)="onRowDoubleClick(row)"></tr>
   </table>
-
-
 </div>
 <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>

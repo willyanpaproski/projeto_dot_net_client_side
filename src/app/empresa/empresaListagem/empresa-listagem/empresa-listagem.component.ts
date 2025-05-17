@@ -11,6 +11,7 @@ import {
 import { EmpresaCadastroComponent } from '../../empresaCadastro/empresa-cadastro/empresa-cadastro.component';
 import { ModalComponent } from '../../../modal/modal.component';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-empresa-listagem',
@@ -43,7 +44,7 @@ export class EmpresaListagemComponent implements OnInit {
   modalTitle = '';
   modalComponent: any;
 
-  constructor(private apollo: Apollo) {}
+  constructor(private apollo: Apollo, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.carregarEmpresas();
@@ -89,6 +90,22 @@ export class EmpresaListagemComponent implements OnInit {
           console.error('Erro Apollo GraphQL:', err);
         }
       });
+  }
+
+  abrirModalEdicao(item: any): void {
+    const id = item?.id;
+    if (!id) return;
+
+    this.http.get(`http://localhost:5250/api/empresa/${id}`).subscribe({
+      next: (empresa: any) => {
+        this.modalTitle = 'Editar Empresa';
+        this.modalComponent = EmpresaCadastroComponent;
+        this.showModal = true;
+      },
+      error: (error) => {
+        console.error('Erro ao buscar empresa: ', error);
+      }
+    });
   }
 
   abrirModalNovaEmpresa(): void {

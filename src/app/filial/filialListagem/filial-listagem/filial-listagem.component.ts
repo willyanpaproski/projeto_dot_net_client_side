@@ -4,14 +4,14 @@ import {
   formatDateTime,
   formatCep,
   formatCelular,
-  formatCpfCnpj,
-  formatDate
+  formatCpfCnpj
 } from '../../../shared/utils/formatters';
 import { DataTableComponent } from '../../../shared/data-table/data-table.component';
 import { Apollo, gql } from 'apollo-angular';
 import { FilialCadastroComponent } from '../../filialCadastro/filial-cadastro/filial-cadastro.component';
 import { ModalComponent } from '../../../modal/modal.component';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-filial-listagem',
@@ -45,14 +45,13 @@ export class FilialListagemComponent implements OnInit {
   modalTitle = '';
   modalComponent: any;
 
-  constructor(private apollo: Apollo) {}
+  constructor(private apollo: Apollo, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.carregarFiliais();
   }
 
-  carregarFiliais(): void
-  {
+  carregarFiliais(): void {
     const query = gql`
       query {
         filialQuery {
@@ -92,6 +91,22 @@ export class FilialListagemComponent implements OnInit {
           console.error('Erro Apollo GraphQL:', err);
         }
       });
+  }
+
+  abrirModalEdicao(item: any): void {
+    const id = item?.id;
+    if (!id) return;
+
+    this.http.get(`http://localhost:5250/api/filial/${id}`).subscribe({
+      next: (filial: any) => {
+        this.modalTitle = 'Editar Filial';
+        this.modalComponent = FilialCadastroComponent;
+        this.showModal = true;
+      },
+      error: (error) => {
+        console.error('Erro ao buscar filial: ', error);
+      }
+    });
   }
 
   abrirModalNovaFilial(): void {

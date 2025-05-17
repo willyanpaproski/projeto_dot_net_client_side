@@ -12,6 +12,7 @@ import {
 import { ClienteCadastroComponent } from '../../clienteCadastro/cliente-cadastro/cliente-cadastro.component';
 import { ModalComponent } from '../../../modal/modal.component';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-cliente-listagem',
@@ -45,7 +46,7 @@ export class ClienteListagemComponent implements OnInit {
   modalTitle = '';
   modalComponent: any;
 
-  constructor(private apollo: Apollo) {}
+  constructor(private apollo: Apollo, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.carregarClientes();
@@ -93,6 +94,22 @@ export class ClienteListagemComponent implements OnInit {
       });
   }
 
+  abrirModalEdicao(item: any): void {
+    const id = item?.id;
+    if (!id) return;
+
+    this.http.get(`http://localhost:5250/api/cliente/${id}`).subscribe({
+      next: (cliente: any) => {
+        this.modalTitle = 'Editar Cliente',
+        this.modalComponent = ClienteCadastroComponent;
+        this.showModal = true;
+      },
+      error: (error) => {
+        console.error(`Erro ao buscar cliente: `, error);
+      }
+    });
+  }
+
   abrirModalNovoCliente(): void {
     this.modalTitle = 'Novo Cliente';
     this.modalComponent = ClienteCadastroComponent;
@@ -103,5 +120,4 @@ export class ClienteListagemComponent implements OnInit {
     this.showModal = false;
     this.carregarClientes();
   }
-
 }

@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, ViewChild, AfterViewInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -19,6 +19,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 export class DataTableComponent implements AfterViewInit, OnChanges {
   @Input() displayedColumns: { key: string, label: string, width?: string, format?: (value: any) => string }[] = [];
   @Input() dataSource: any[] = [];
+  @Output() rowDoubleClick = new EventEmitter<any>();
 
   dataSourceTable = new MatTableDataSource<any>();
 
@@ -38,5 +39,9 @@ export class DataTableComponent implements AfterViewInit, OnChanges {
 
   get columnKeys(): string[] {
     return this.displayedColumns.map(c => c.key);
+  }
+
+  onRowDoubleClick(row: any): void {
+    this.rowDoubleClick.emit(row);
   }
 }

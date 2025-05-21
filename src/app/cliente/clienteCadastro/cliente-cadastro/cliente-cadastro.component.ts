@@ -85,8 +85,6 @@ export class ClienteCadastroComponent implements OnInit {
       cpfCnpj: removerMascara(formData.cpfCnpj)
     };
 
-    console.log(payload);
-
     const isEdit = !!this.cliente?.id;
 
     const request$ = isEdit

@@ -16,7 +16,6 @@ export function handleValidationError(error: any, notificationService: Notificat
     }
 
     mensagens.forEach(msg => {
-      console.log(mensagens);
       notificationService.show(msg, 'error');
     });
   } else {

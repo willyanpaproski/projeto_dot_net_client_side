@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import {
   ControlValueAccessor,
+  FormsModule,
   NG_VALUE_ACCESSOR
 } from '@angular/forms';
 import { ModalComponent } from '../../../modal/modal.component';
@@ -18,7 +19,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 @Component({
   selector: 'app-input-selector',
   standalone: true,
-  imports: [ModalComponent, CommonModule],
+  imports: [ModalComponent, CommonModule, FormsModule],
   templateUrl: './input-selector.component.html',
   styleUrl: './input-selector.component.css',
   providers: [
@@ -37,7 +38,7 @@ export class InputSelectorComponent implements ControlValueAccessor {
   @Input() nomeCampoDescricao: string = '';
   @Output() selected = new EventEmitter<any>();
 
-  value: any;
+  value: any = '';
   descricaoEntidade = '';
   showModal = false;
   modalInjector?: Injector;
@@ -46,7 +47,7 @@ export class InputSelectorComponent implements ControlValueAccessor {
 
   // Métodos do ControlValueAccessor
   private onChange: (value: any) => void = () => {};
-  private onTouched: () => void = () => {};
+  public onTouched: () => void = () => {};
 
   constructor(private injector: Injector, private http: HttpClient) {
     this.inputSubject.pipe(
@@ -57,11 +58,12 @@ export class InputSelectorComponent implements ControlValueAccessor {
     });
   }
 
-  // Chamado quando o valor é definido externamente (pelo form)
   writeValue(value: any): void {
-    this.value = value;
+    this.value = value ?? '';
     if (value) {
       this.buscarDescricaoEntidade(value);
+    } else {
+      this.descricaoEntidade = '';
     }
   }
 
@@ -71,10 +73,6 @@ export class InputSelectorComponent implements ControlValueAccessor {
 
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
-  }
-
-  setDisabledState?(isDisabled: boolean): void {
-    // Implementar se quiser suporte a desabilitar o campo
   }
 
   abrirModal(): void {
@@ -92,17 +90,16 @@ export class InputSelectorComponent implements ControlValueAccessor {
   onSelecionar(item: any): void {
     this.value = item?.[this.exibirCampo];
     this.descricaoEntidade = item?.[this.nomeCampoDescricao] || '';
-    this.onChange(this.value); // Atualiza o form control
+    this.onChange(this.value);
     this.selected.emit(item);
     this.fecharModal();
   }
 
-  onInputChange(event: Event): void {
-    const inputValue = (event.target as HTMLInputElement).value;
-    this.value = inputValue;
-    this.onChange(inputValue); // Atualiza o form control
-    this.selected.emit({ [this.exibirCampo]: inputValue });
-    this.inputSubject.next(inputValue);
+  onInputChange(novoValor: any): void {
+    this.value = novoValor;
+    this.onChange(novoValor);
+    this.selected.emit({ [this.exibirCampo]: novoValor });
+    this.inputSubject.next(novoValor);
   }
 
   buscarDescricaoEntidade(id: string): void {

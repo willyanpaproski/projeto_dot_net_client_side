@@ -38,22 +38,22 @@ export class ClienteCadastroComponent implements OnInit {
   ngOnInit(): void {
     this.userForm = this.fb.group({
       id: [this.cliente?.id ?? null],
-      ativo: [this.cliente?.ativo ?? true, Validators.required],
-      nome: [this.cliente?.nome ?? '', Validators.required],
-      cpfCnpj: [this.cliente?.cpfCnpj ?? '', Validators.required],
-      dataNascimento: [this.cliente?.dataNascimento ?? '', Validators.required],
-      tipoPessoa: [this.cliente?.tipoPessoa ?? 'Fisica', Validators.required],
+      ativo: [this.cliente?.ativo ?? true],
+      nome: [this.cliente?.nome ?? ''],
+      cpfCnpj: [this.cliente?.cpfCnpj ?? ''],
+      dataNascimento: [this.cliente?.dataNascimento ?? ''],
+      tipoPessoa: [this.cliente?.tipoPessoa ?? 'Fisica'],
       email: [this.cliente?.email ?? ''],
       telefone: [this.cliente?.telefone ?? ''],
       celular: [this.cliente?.celular ?? ''],
-      cep: [this.cliente?.cep ?? '', Validators.required],
-      endereco: [this.cliente?.endereco ?? '', Validators.required],
+      cep: [this.cliente?.cep ?? ''],
+      endereco: [this.cliente?.endereco ?? ''],
       cidade: [this.cliente?.cidade ?? ''],
       bairro: [this.cliente?.bairro ?? ''],
       estado: [this.cliente?.estado ?? ''],
       rua: [this.cliente?.rua ?? ''],
       complemento: [this.cliente?.complemento ?? ''],
-      empresaId: [this.cliente?.empresaId ?? '', Validators.required],
+      empresaId: [this.cliente?.empresaId ?? null],
       filialId: [this.cliente?.filialId ?? null]
     });
 
@@ -75,33 +75,33 @@ export class ClienteCadastroComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.userForm.valid) {
-      const formData = this.userForm.value;
+    const formData = this.userForm.value;
 
-      const payload = {
-        ...formData,
-        telefone: removerMascara(formData.telefone),
-        celular: removerMascara(formData.celular),
-        cep: removerMascara(formData.cep),
-        cpfCnpj: removerMascara(formData.cpfCnpj)
-      };
+    const payload = {
+      ...formData,
+      telefone: removerMascara(formData.telefone),
+      celular: removerMascara(formData.celular),
+      cep: removerMascara(formData.cep),
+      cpfCnpj: removerMascara(formData.cpfCnpj)
+    };
 
-      const isEdit = !!this.cliente?.id;
+    console.log(payload);
 
-      const request$ = isEdit
-        ? this.http.put(`http://localhost:5250/api/cliente/${payload.id}`, payload)
-        : this.http.post('http://localhost:5250/api/cliente', payload);
+    const isEdit = !!this.cliente?.id;
 
-      request$.subscribe({
-        next: () => {
-          this.notificationService.show(isEdit ? 'Cliente atualizado com sucesso!' : 'Cliente cadastrado com sucesso!', 'success');
-          this.fecharModalAposAtualizarCadastrar();
-        },
-        error: (error) => {
-          handleValidationError(error, this.notificationService);
-        }
-      });
-    }
+    const request$ = isEdit
+      ? this.http.put(`http://localhost:5250/api/cliente/${payload.id}`, payload)
+      : this.http.post('http://localhost:5250/api/cliente', payload);
+
+    request$.subscribe({
+      next: () => {
+        this.notificationService.show(isEdit ? 'Cliente atualizado com sucesso!' : 'Cliente cadastrado com sucesso!', 'success');
+        this.fecharModalAposAtualizarCadastrar();
+      },
+      error: (error) => {
+        handleValidationError(error, this.notificationService);
+      }
+    });
   }
 
   onEmpresaSelecionada(empresa: any) {

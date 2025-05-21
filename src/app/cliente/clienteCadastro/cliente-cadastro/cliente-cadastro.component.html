@@ -1,5 +1,5 @@
 <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-  <button type="submit" [disabled]="userForm.invalid">
+  <button type="submit">
     {{ cliente ? 'Salvar' : 'Salvar' }}
   </button>
 

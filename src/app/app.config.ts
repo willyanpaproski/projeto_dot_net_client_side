@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
 import { provideApollo } from 'apollo-angular';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   return {
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     ReactiveFormsModule,
     importProvidersFrom(HttpClientModule),
-    provideApollo(() => createApollo(inject(HttpLink)))
+    provideApollo(() => createApollo(inject(HttpLink))),
+    provideNgxMask()
   ]
 };

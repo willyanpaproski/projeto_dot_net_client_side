@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Optional, Output } from '@angular/core';
 import {
   formatBoolean,
   formatDateTime,
@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injector } from '@angular/core';
 import { FILIAL_DATA } from '../../filialCadastro/filial-cadastro/filial-cadastro.component';
+import { NotificationService } from '../../../shared/notification.service';
 
 @Component({
   selector: 'app-filial-listagem',
@@ -22,6 +23,8 @@ import { FILIAL_DATA } from '../../filialCadastro/filial-cadastro/filial-cadastr
   styleUrl: './filial-listagem.component.css'
 })
 export class FilialListagemComponent implements OnInit {
+  @Output() selecionar = new EventEmitter<any>();
+
   displayedColumns = [
     { key: 'id', label: 'ID', width: '80px' },
     { key: 'ativo', label: 'Ativo', width: '80px', format: formatBoolean },
@@ -50,7 +53,14 @@ export class FilialListagemComponent implements OnInit {
 
   selectedRow: any = null;
 
-  constructor(private apollo: Apollo, private http: HttpClient, private injector: Injector) {}
+  constructor(
+    private apollo: Apollo,
+    private http: HttpClient,
+    private injector: Injector,
+    private notificationService: NotificationService,
+    @Inject('MODO_SELECAO') @Optional() public modoSelecao: boolean = false,
+    @Inject('SELECT_HANDLER') @Optional() public selectHandler: ((item: any) => void) | null = null
+  ) {}
 
   ngOnInit(): void {
     this.carregarFiliais();
@@ -126,11 +136,11 @@ export class FilialListagemComponent implements OnInit {
 
     this.http.delete(`http://localhost:5250/api/filial/${id}`).subscribe({
       next: () => {
-        console.log('Filial deletada');
+        this.notificationService.show('Filial deletada com sucesso!', 'success');
         this.carregarFiliais();
       },
       error: (error) => {
-        alert(error?.error || 'Erro desconhecido');
+        this.notificationService.show(error?.error, 'error');
       }
     });
   }
@@ -149,6 +159,16 @@ export class FilialListagemComponent implements OnInit {
   }
 
   onRowClick(row: any): void {
+    this.selectedRow = this.selectedRow === row ? null : row;
+  }
+
+  onRowDoubleClick(row: any): void {
     this.selectedRow = row;
+
+    if (this.modoSelecao && this.selectHandler) {
+      this.selectHandler(row);
+    } else {
+      this.abrirModalEdicao(row);
+    }
   }
 }

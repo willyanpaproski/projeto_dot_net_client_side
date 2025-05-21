@@ -64,3 +64,7 @@ export function formatDateTime(value: string): string {
 
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 }
+
+export function removerMascara(valor: string): string {
+  return valor.replace(/\D/g, '');
+}

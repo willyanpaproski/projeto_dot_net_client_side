@@ -1,0 +1,23 @@
+<label>
+  {{ label }}:
+  <div class="input-selector-wrapper">
+    <input
+      type="number"
+      [placeholder]="label"
+      [value]="value"
+      (input)="onInputChange($event)"
+      class="form-control"
+    />
+    <button type="button" (click)="abrirModal()">
+      <i class="pi pi-search"></i>
+    </button>
+  </div>
+</label>
+
+<div *ngIf="descricaoEntidade" class="form-text text-muted">
+  {{ descricaoEntidade }}
+</div>
+
+<app-modal *ngIf="showModal" [title]="'Selecionar ' + label" (closeModal)="fecharModal()">
+  <ng-container *ngComponentOutlet="componenteListagem; injector: modalInjector"></ng-container>
+</app-modal>

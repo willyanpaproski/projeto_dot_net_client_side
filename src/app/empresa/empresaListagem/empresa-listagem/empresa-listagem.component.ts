@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Optional, Output } from '@angular/core';
 import { DataTableComponent } from '../../../shared/data-table/data-table.component';
 import { Apollo, gql } from 'apollo-angular';
 import {
@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injector } from '@angular/core';
 import { EMPRESA_DATA } from '../../empresaCadastro/empresa-cadastro/empresa-cadastro.component';
+import { NotificationService } from '../../../shared/notification.service';
 
 @Component({
   selector: 'app-empresa-listagem',
@@ -22,6 +23,8 @@ import { EMPRESA_DATA } from '../../empresaCadastro/empresa-cadastro/empresa-cad
   styleUrl: './empresa-listagem.component.css'
 })
 export class EmpresaListagemComponent implements OnInit {
+  @Output() selecionar = new EventEmitter<any>();
+
   displayedColumns = [
     { key: 'id', label: 'ID', width: '80px' },
     { key: 'ativo', label: 'Ativo', width: '80px', format: formatBoolean },
@@ -49,7 +52,14 @@ export class EmpresaListagemComponent implements OnInit {
 
   selectedRow: any = null;
 
-  constructor(private apollo: Apollo, private http: HttpClient, private injector: Injector) {}
+  constructor(
+    private apollo: Apollo,
+    private http: HttpClient,
+    private injector: Injector,
+    private notificationService: NotificationService,
+    @Inject('MODO_SELECAO') @Optional() public modoSelecao: boolean = false,
+    @Inject('SELECT_HANDLER') @Optional() public selectHandler: ((item: any) => void) | null = null
+  ) {}
 
   ngOnInit(): void {
     this.carregarEmpresas();
@@ -125,11 +135,11 @@ export class EmpresaListagemComponent implements OnInit {
 
     this.http.delete(`http://localhost:5250/api/empresa/${id}`).subscribe({
       next: () => {
-        console.log('Empresa deletada');
+        this.notificationService.show('Empresa deletada com sucesso!', 'success');
         this.carregarEmpresas();
       },
       error: (error) => {
-        alert(error?.error);
+        this.notificationService.show(error?.error, 'error');
       }
     });
   }
@@ -148,6 +158,16 @@ export class EmpresaListagemComponent implements OnInit {
   }
 
   onRowClick(row: any): void {
+    this.selectedRow = this.selectedRow === row ? null : row;
+  }
+
+  onRowDoubleClick(row: any): void {
     this.selectedRow = row;
+
+    if (this.modoSelecao && this.selectHandler) {
+      this.selectHandler(row);
+    } else {
+      this.abrirModalEdicao(row);
+    }
   }
 }

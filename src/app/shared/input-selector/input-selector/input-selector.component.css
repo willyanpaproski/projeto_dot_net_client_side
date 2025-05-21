@@ -1,0 +1,33 @@
+.input-selector-wrapper {
+  display: flex;
+  align-items: stretch; /* Estica o botão para mesma altura do input */
+}
+
+.input-selector-wrapper input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-right: none;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  background-color: #f3f4f6;
+  color: #111827;
+  font-size: 1rem;
+}
+
+.input-selector-wrapper button {
+  background-color: #374151;
+  border: 1px solid #d1d5db;
+  border-left: none;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  padding: 0 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-selector-wrapper i {
+  color: white;
+  font-size: 1rem;
+}

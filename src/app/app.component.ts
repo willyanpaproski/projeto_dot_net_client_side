@@ -2,10 +2,11 @@ import { Component, HostListener, inject, PLATFORM_ID, signal } from '@angular/c
 import { LeftSidebarComponent } from './left-sidebar/left-sidebar.component';
 import { MainComponent } from './main/main.component';
 import { isPlatformBrowser } from '@angular/common';
+import { NotificationComponent } from './shared/notification/notification.component';
 
 @Component({
   selector: 'app-root',
-  imports: [LeftSidebarComponent, MainComponent],
+  imports: [LeftSidebarComponent, MainComponent, NotificationComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

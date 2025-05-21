@@ -86,6 +86,11 @@
   text-align: center;
 }
 
+.modal-title {
+  color: #d3d3d3;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 .btn-close {
   cursor: pointer;
   border-radius: 50%;

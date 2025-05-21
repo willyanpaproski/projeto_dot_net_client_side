@@ -14,7 +14,8 @@ import { ModalComponent } from '../../../modal/modal.component';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injector } from '@angular/core';
-import { CLIENTE_DATA } from '../../clienteCadastro/cliente-cadastro/cliente-cadastro.component'
+import { CLIENTE_DATA, FECHAR_MODAL } from '../../clienteCadastro/cliente-cadastro/cliente-cadastro.component';
+import { NotificationService } from '../../../shared/notification.service';
 
 @Component({
   selector: 'app-cliente-listagem',
@@ -51,7 +52,12 @@ export class ClienteListagemComponent implements OnInit {
 
   selectedRow: any = null;
 
-  constructor(private apollo: Apollo, private http: HttpClient, private injector: Injector) {}
+  constructor(
+    private apollo: Apollo,
+    private http: HttpClient,
+    private injector: Injector,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.carregarClientes();
@@ -110,7 +116,8 @@ export class ClienteListagemComponent implements OnInit {
         this.showModal = true;
         this.modalInjector = Injector.create({
           providers: [
-            { provide: CLIENTE_DATA, useValue: cliente }
+            { provide: CLIENTE_DATA, useValue: cliente },
+            { provide: FECHAR_MODAL, useValue: this.fecharModal.bind(this) }
           ],
           parent: this.injector
         });
@@ -127,11 +134,11 @@ export class ClienteListagemComponent implements OnInit {
 
     this.http.delete(`http://localhost:5250/api/cliente/${id}`).subscribe({
       next: () => {
-        console.log('cliente deletado');
+        this.notificationService.show('Cliente deletado com sucesso!', 'success');
         this.carregarClientes();
       },
       error: (error) => {
-        console.log('Erro ao deletar cliente: ', error);
+        this.notificationService.show('Erro ao deletar cliente!', 'error');
       }
     });
   }
@@ -140,6 +147,12 @@ export class ClienteListagemComponent implements OnInit {
     this.modalTitle = 'Novo Cliente';
     this.modalComponent = ClienteCadastroComponent;
     this.showModal = true;
+    this.modalInjector = Injector.create({
+      providers: [
+        { provide: FECHAR_MODAL, useValue: this.fecharModal.bind(this) }
+      ],
+      parent: this.injector
+    });
   }
 
   fecharModal(): void {
@@ -150,6 +163,6 @@ export class ClienteListagemComponent implements OnInit {
   }
 
   onRowClick(row: any): void {
-    this.selectedRow = row
+    this.selectedRow = this.selectedRow === row ? null : row;
   }
 }

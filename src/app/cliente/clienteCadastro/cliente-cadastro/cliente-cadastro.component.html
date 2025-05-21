@@ -1,1 +1,53 @@
-<p>cliente-cadastro works!</p>
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <button type="submit" [disabled]="userForm.invalid">
+    {{ cliente ? 'Salvar' : 'Salvar' }}
+  </button>
+
+  <label>Nome: <input formControlName="nome" /></label><br />
+  <label>CPF/CNPJ: <input formControlName="cpfCnpj" [mask]="cpfCnpjMask" /></label><br />
+  <label>Data de Nascimento: <input type="date" formControlName="dataNascimento" /></label><br />
+  <label>Tipo de Pessoa:
+    <select formControlName="tipoPessoa">
+      <option value="Fisica">Física</option>
+      <option value="Juridica">Jurídica</option>
+    </select>
+  </label><br />
+  <label>Email: <input formControlName="email" /></label><br />
+  <label>Telefone: <input formControlName="telefone" mask="(00) 00000-0000" /></label><br />
+  <label>Celular: <input formControlName="celular" mask="(00) 00000-0000" /></label><br />
+  <label>CEP: <input formControlName="cep" mask="00000-000" /></label><br />
+  <label>Endereço: <input formControlName="endereco" /></label><br />
+  <label>Cidade: <input formControlName="cidade" /></label><br />
+  <label>Bairro: <input formControlName="bairro" /></label><br />
+  <label>Estado: <input formControlName="estado" /></label><br />
+  <label>Rua: <input formControlName="rua" /></label><br />
+  <label>Complemento: <input formControlName="complemento" /></label><br />
+  <label>
+    <app-input-selector
+      label="Empresa"
+      formControlName="empresaId"
+      [exibirCampo]="'nomeFantasia'"
+      [nomeEntidade]="'empresa'"
+      [nomeCampoDescricao]="'nomeFantasia'"
+      [componenteListagem]="empresaListagemComponent"
+      (selected)="onEmpresaSelecionada($event)"
+    ></app-input-selector>
+  </label><br />
+  <label>
+    <app-input-selector
+    label="Filial"
+    [exibirCampo]="'nome'"
+    [nomeEntidade]="'filial'"
+    [nomeCampoDescricao]="'nome'"
+    [componenteListagem]="filialListagemComponent"
+    (selected)="onFilialSelecionada($event)"
+    formControlName="filialId"
+    ></app-input-selector>
+  </label><br />
+  <label>Ativo:
+    <select formControlName="ativo">
+      <option [ngValue]="true">Sim</option>
+      <option [ngValue]="false">Não</option>
+    </select>
+  </label><br />
+</form>

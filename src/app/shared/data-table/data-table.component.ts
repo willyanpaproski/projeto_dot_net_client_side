@@ -17,7 +17,12 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
   styleUrl: './data-table.component.css'
 })
 export class DataTableComponent implements AfterViewInit, OnChanges {
-  @Input() displayedColumns: { key: string, label: string, width?: string, format?: (value: any) => string }[] = [];
+  @Input() displayedColumns: {
+      key: string,
+      label: string,
+      width?: string,
+      format?: (value: any, row?: any) => string
+   }[] = [];
   @Input() dataSource: any[] = [];
   @Output() rowDoubleClick = new EventEmitter<any>();
   @Output() rowClick = new EventEmitter<any>();
@@ -57,4 +62,10 @@ export class DataTableComponent implements AfterViewInit, OnChanges {
     this.selectedRow = this.selectedRow === row ? null : row;
     this.rowClick.emit(row);
   }
+
+  getNestedValue(obj: any, key: string): any {
+    if (!obj || !key) return undefined;
+    return key.split('.').reduce((acc, part) => acc && acc[part], obj);
+  }
+
 }

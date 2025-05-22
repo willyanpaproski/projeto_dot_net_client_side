@@ -6,8 +6,8 @@ import { removerMascara } from '../../../shared/utils/formatters';
 import { EmpresaListagemComponent } from '../../../empresa/empresaListagem/empresa-listagem/empresa-listagem.component';
 import { InputSelectorComponent } from '../../../shared/input-selector/input-selector/input-selector.component';
 import { FilialListagemComponent } from '../../../filial/filialListagem/filial-listagem/filial-listagem.component';
-import { NotificationService } from '../../../shared/notification.service';
 import { handleValidationError } from '../../../shared/utils/handle-validation-errors';
+import { NotificationService } from '../../../shared/notification/notification.service';
 
 export const CLIENTE_DATA = new InjectionToken<any>('CLIENTE_DATA');
 export const FECHAR_MODAL = new InjectionToken<any>('FECHAR_MODAL');
@@ -108,5 +108,6 @@ export class ClienteCadastroComponent implements OnInit {
 
   onFilialSelecionada(filial: any) {
     this.userForm.patchValue({ filialId: filial.id });
+    this.userForm.patchValue({ empresaId: filial.empresa.id });
   }
 }

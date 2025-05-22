@@ -1,1 +1,42 @@
-<p>filial-cadastro works!</p>
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <button type="submit">
+    {{ filial ? 'Salvar' : 'Salvar' }}
+  </button>
+
+  <label>Nome: <input formControlName="nome" /></label><br />
+  <label>CNPJ: <input formControlName="cnpj" mask="00.000.000/0000-00" /></label><br />
+  <label>CEP: <input formControlName="cep" mask="00000-000" /></label><br />
+  <label>Endereço: <input formControlName="endereco" /></label><br />
+  <label>Número: <input formControlName="numero" /></label><br />
+  <label>Rua: <input formControlName="rua" /></label><br />
+  <label>Cidade: <input formControlName="cidade" /></label><br />
+  <label>Estado: <input formControlName="estado" /></label><br />
+  <label>Bairro: <input formControlName="bairro" /></label><br />
+  <label>Complemento: <input formControlName="complemento" /></label><br />
+  <label>Telefone: <input formControlName="telefone" mask="(00) 00000-0000" /></label><br />
+  <label>Celular: <input formControlName="celular" mask="(00) 00000-0000" /></label><br />
+  <label>Email: <input formControlName="email" /></label><br />
+  <label>Data de Abertura: <input type="date" formControlName="dataAbertura" /></label><br />
+  <label>Cor: <input formControlName="cor" /></label><br />
+  <label>Número de Inscrição Estadual: <input formControlName="numeroInscricaoEstadual" /></label><br />
+  <label>Número de Inscrição Municipal: <input formControlName="numeroInscricaoMunicipal" /></label><br />
+  <label>Número do Alvará: <input formControlName="numeroAlvara" /></label><br />
+  <label>Ativo:
+    <select formControlName="ativo">
+      <option [ngValue]="true">Sim</option>
+      <option [ngValue]="false">Não</option>
+    </select>
+  </label><br />
+  <label>
+    <app-input-selector
+      label="Empresa"
+      formControlName="empresaId"
+      [exibirCampo]="'nomeFantasia'"
+      [nomeEntidade]="'empresa'"
+      [nomeCampoDescricao]="'nomeFantasia'"
+      [componenteListagem]="empresaListagemComponent"
+      (selected)="onEmpresaSelecionada($event)"
+    ></app-input-selector>
+  </label>
+  <label class="full-width-label">Observações: <textarea formControlName="observacoes" class="full-width-textarea"></textarea></label><br />
+</form>

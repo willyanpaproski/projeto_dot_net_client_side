@@ -2,3 +2,47 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+/* CSS PARA CAMPOS TEXTAREA QUE OCUPAM 100% DA LARGURA DO MODAL */
+
+.full-width-textarea {
+  grid-column: 1 / -1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background-color: #f3f4f6;
+  color: #111827;
+  transition: border-color 0.2s;
+  resize: vertical;
+  min-height: 3rem;
+  font-family: inherit;
+  font-size: 1rem;
+}
+.full-width-textarea:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+.full-width-label {
+  grid-column: 1 / -1;
+}
+
+.full-width-label textarea {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background-color: #f3f4f6;
+  color: #111827;
+  transition: border-color 0.2s;
+  resize: vertical;
+  min-height: 3rem;
+  font-family: inherit;
+  font-size: 1rem;
+}
+.full-width-label textarea:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+/* ---------------------------------------------------------------------------------- */

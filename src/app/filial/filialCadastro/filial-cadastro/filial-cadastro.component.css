@@ -1,0 +1,71 @@
+form {
+  background-color: #f9fafb;
+  padding: 2rem;
+  border-radius: 1rem;
+  color: #1f2937;
+  max-width: 100%;
+  margin-left: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem 2rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: #374151;
+}
+
+input,
+select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background-color: #f3f4f6;
+  color: #111827;
+  transition: border-color 0.2s;
+}
+
+input:focus,
+select:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+button[type="submit"] {
+  grid-column: span 4;
+  justify-self: start;
+  margin-top: 1rem;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #2f3b52;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #2f3b52;
+}
+
+button[type="submit"]:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+textarea {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background-color: #f3f4f6;
+  color: #111827;
+  transition: border-color 0.2s;
+  resize: vertical; /* permite redimensionamento vertical apenas */
+  min-height: 2.5rem; /* altura mínima compatível com inputs */
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+

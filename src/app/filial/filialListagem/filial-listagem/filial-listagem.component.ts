@@ -13,8 +13,8 @@ import { ModalComponent } from '../../../modal/modal.component';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injector } from '@angular/core';
-import { FILIAL_DATA } from '../../filialCadastro/filial-cadastro/filial-cadastro.component';
-import { NotificationService } from '../../../shared/notification.service';
+import { FILIAL_DATA, FECHAR_MODAL } from '../../filialCadastro/filial-cadastro/filial-cadastro.component';
+import { NotificationService } from '../../../shared/notification/notification.service';
 
 @Component({
   selector: 'app-filial-listagem',
@@ -40,6 +40,7 @@ export class FilialListagemComponent implements OnInit {
     { key: 'telefone', label: 'Telefone', width: '150px', format: formatCelular },
     { key: 'celular', label: 'Celular', width: '150px', format: formatCelular },
     { key: 'email', label: 'Email', width: '200px' },
+    { key: 'empresa.razaoSocial', label: 'Empresa', width: '200px', format: (value: any, row: any) => row.empresa?.razaoSocial ?? '' },
     { key: 'createdAt', label: 'Criado em', width: '150px', format: formatDateTime },
     { key: 'updatedAt', label: 'Atualizado em', width: '150px', format: formatDateTime }
   ];
@@ -70,7 +71,7 @@ export class FilialListagemComponent implements OnInit {
     const query = gql`
       query {
         filialQuery {
-          pegarFiliais {
+          pegarFiliaisComEmpresa {
             id
             ativo
             nome
@@ -87,6 +88,10 @@ export class FilialListagemComponent implements OnInit {
             email
             createdAt
             updatedAt
+            empresa {
+              id
+              razaoSocial
+            }
           }
         }
       }
@@ -100,7 +105,7 @@ export class FilialListagemComponent implements OnInit {
       .valueChanges
       .subscribe({
         next: (result) => {
-          this.dataSource = [...result.data.filialQuery.pegarFiliais]
+          this.dataSource = [...result.data.filialQuery.pegarFiliaisComEmpresa]
         },
         error: (err) => {
           console.error('Erro Apollo GraphQL:', err);
@@ -119,7 +124,8 @@ export class FilialListagemComponent implements OnInit {
         this.showModal = true;
         this.modalInjector = Injector.create({
           providers: [
-            { provide: FILIAL_DATA, useValue: filial }
+            { provide: FILIAL_DATA, useValue: filial },
+            { provide: FECHAR_MODAL, useValue: this.fecharModal.bind(this) }
           ],
           parent: this.injector
         });
@@ -146,9 +152,15 @@ export class FilialListagemComponent implements OnInit {
   }
 
   abrirModalNovaFilial(): void {
-    this.modalTitle = 'Nova Empresa';
+    this.modalTitle = 'Nova Filial';
     this.modalComponent = FilialCadastroComponent;
     this.showModal = true;
+    this.modalInjector = Injector.create({
+      providers: [
+        { provide: FECHAR_MODAL, useValue: this.fecharModal.bind(this) }
+      ],
+      parent: this.injector
+    });
   }
 
   fecharModal(): void {

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { NotificationService } from '../notification.service';
+import { NotificationService } from '../notification/notification.service';
 
 export function handleValidationError(error: any, notificationService: NotificationService) {
   if (!(error instanceof HttpErrorResponse)) return;

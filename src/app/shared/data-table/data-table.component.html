@@ -7,8 +7,8 @@
       <td mat-cell *matCellDef="let element">
         {{
           column.format
-            ? column.format(element[column.key])
-            : element[column.key]
+            ? column.format(getNestedValue(element, column.key), element)
+            : getNestedValue(element, column.key)
         }}
       </td>
     </ng-container>
@@ -16,11 +16,11 @@
     <tr mat-header-row *matHeaderRowDef="columnKeys"></tr>
     <tr
       mat-row
-      *matRowDef="let row;
-      columns: columnKeys;"
+      *matRowDef="let row; columns: columnKeys;"
       (dblclick)="onRowDoubleClick(row)"
       (click)="onRowClick(row)"
-      [class.selected]="row === selectedRow"></tr>
+      [class.selected]="row === selectedRow"
+    ></tr>
   </table>
 </div>
 <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>

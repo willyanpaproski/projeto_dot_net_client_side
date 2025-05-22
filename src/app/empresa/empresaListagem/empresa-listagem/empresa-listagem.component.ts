@@ -13,8 +13,8 @@ import { ModalComponent } from '../../../modal/modal.component';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injector } from '@angular/core';
-import { EMPRESA_DATA } from '../../empresaCadastro/empresa-cadastro/empresa-cadastro.component';
-import { NotificationService } from '../../../shared/notification.service';
+import { EMPRESA_DATA, FECHAR_MODAL } from '../../empresaCadastro/empresa-cadastro/empresa-cadastro.component';
+import { NotificationService } from '../../../shared/notification/notification.service';
 
 @Component({
   selector: 'app-empresa-listagem',
@@ -118,7 +118,8 @@ export class EmpresaListagemComponent implements OnInit {
         this.showModal = true;
         this.modalInjector = Injector.create({
           providers: [
-            { provide: EMPRESA_DATA, useValue: empresa }
+            { provide: EMPRESA_DATA, useValue: empresa },
+            { provide: FECHAR_MODAL, useValue: this.fecharModal.bind(this) }
           ],
           parent: this.injector
         });
@@ -148,6 +149,11 @@ export class EmpresaListagemComponent implements OnInit {
     this.modalTitle = 'Nova Empresa';
     this.modalComponent = EmpresaCadastroComponent;
     this.showModal = true;
+    this.modalInjector = Injector.create({
+      providers: [
+        { provide: FECHAR_MODAL, useValue: this.fecharModal.bind(this) }
+      ]
+    });
   }
 
   fecharModal(): void {

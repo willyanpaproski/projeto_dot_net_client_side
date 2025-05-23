@@ -1,0 +1,28 @@
+<div class="filtro-container">
+  <select [(ngModel)]="campoSelecionado" (ngModelChange)="onCampoSelecionadoChange()">
+    <option *ngFor="let campo of campos" [ngValue]="campo">{{ campo.label }}</option>
+  </select>
+
+  <select [(ngModel)]="operadorSelecionado" [disabled]="!campoSelecionado">
+    <option *ngFor="let op of operadoresDisponiveis" [value]="op">{{ op }}</option>
+  </select>
+
+  <input *ngIf="campoSelecionado?.tipo !== 'boolean' && campoSelecionado?.tipo != 'date'"
+         [(ngModel)]="valor"
+         [type]="campoSelecionado?.tipo === 'number' ? 'number' : 'text'"
+         placeholder="Valor" />
+
+  <input *ngIf="campoSelecionado?.tipo == 'date'"
+         [(ngModel)]="valor"
+         [type]="'date'"
+         placeholder="" />
+
+  <select *ngIf="campoSelecionado?.tipo === 'boolean'"
+          [(ngModel)]="valor">
+    <option [ngValue]="true" selected>Sim</option>
+    <option [ngValue]="false">Não</option>
+  </select>
+
+  <button (click)="aplicarFiltro()">Filtrar</button>
+  <button (click)="limparFiltros()">Limpar</button>
+</div>

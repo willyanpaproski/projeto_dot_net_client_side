@@ -1,0 +1,37 @@
+.filtro-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  margin-bottom: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.filtro-container select,
+.filtro-container input {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  height: 2.25rem;
+}
+
+.filtro-container select:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+.filtro-container button {
+  padding: 0.375rem 0.75rem;
+  background-color: #2f3b52;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  height: 2.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}

@@ -7,7 +7,8 @@ import {
   formatDateTime,
   formatCep,
   formatCelular,
-  formatCpfCnpj
+  formatCpfCnpj,
+  formatGenericValue
 } from '../../../shared/utils/formatters';
 import { ClienteCadastroComponent } from '../../clienteCadastro/cliente-cadastro/cliente-cadastro.component';
 import { ModalComponent } from '../../../modal/modal.component';
@@ -16,12 +17,19 @@ import { HttpClient } from '@angular/common/http';
 import { Injector } from '@angular/core';
 import { CLIENTE_DATA, FECHAR_MODAL } from '../../clienteCadastro/cliente-cadastro/cliente-cadastro.component';
 import { NotificationService } from '../../../shared/notification/notification.service';
+import { CampoFiltro, FiltroDataTableComponent } from '../../../shared/filtro-data-table/filtro-data-table/filtro-data-table.component';
 
 @Component({
   selector: 'app-cliente-listagem',
-  imports: [DataTableComponent, ModalComponent, CommonModule],
+  standalone: true,
+  imports: [
+    DataTableComponent,
+    ModalComponent,
+    CommonModule,
+    FiltroDataTableComponent
+  ],
   templateUrl: './cliente-listagem.component.html',
-  styleUrl: './cliente-listagem.component.css'
+  styleUrls: ['./cliente-listagem.component.css']
 })
 export class ClienteListagemComponent implements OnInit {
   displayedColumns = [
@@ -34,7 +42,7 @@ export class ClienteListagemComponent implements OnInit {
     { key: 'telefone', label: 'Telefone', width: '150px', format: formatCelular },
     { key: 'celular', label: 'Celular', width: '150px', format: formatCelular },
     { key: 'cep', label: 'CEP', width: '150px', format: formatCep },
-    { key: 'endereco', label: 'Endereço', with: '200px' },
+    { key: 'endereco', label: 'Endereço', width: '200px' },
     { key: 'cidade', label: 'Cidade', width: '100px' },
     { key: 'bairro', label: 'Bairro', width: '100px' },
     { key: 'rua', label: 'Rua', width: '200px' },
@@ -43,13 +51,19 @@ export class ClienteListagemComponent implements OnInit {
     { key: 'updatedAt', label: 'Atualizado em', width: '150px', format: formatDateTime }
   ];
 
-  dataSource: any[] = [];
+  camposFiltro: CampoFiltro[] = [
+    { label: 'ID', value: 'id', tipo: 'number' },
+    { label: 'Ativo', value: 'ativo', tipo: 'boolean' },
+    { label: 'Nome', value: 'nome', tipo: 'string' },
+    { label: 'Data de Nascimento', value: 'dataNascimento', tipo: 'date' }
+  ];
 
+  filtrosAtivos: any[] = [];
+  dataSource: any[] = [];
   showModal = false;
   modalTitle = '';
   modalComponent: any;
   modalInjector: Injector | undefined;
-
   selectedRow: any = null;
 
   constructor(
@@ -63,11 +77,30 @@ export class ClienteListagemComponent implements OnInit {
     this.carregarClientes();
   }
 
-  carregarClientes(): void {
+  carregarClientes(filtros?: any[]): void {
+    const filtroArgs: any = {};
+
+    filtros?.forEach(filtro => {
+      // Converte o ID para número se o campo for 'id'
+      if (filtro.campo === 'id') {
+        filtroArgs[filtro.campo] = Number(filtro.valor);
+      } else {
+        filtroArgs[filtro.campo] = filtro.valor;
+      }
+      filtroArgs[`${filtro.campo}Operador`] = filtro.operador; // Adiciona o operador do filtro
+    });
+
     const query = gql`
-      query {
+      query ($id: Long, $idOperador: FiltroOperador, $ativo: Boolean, $ativoOperador: FiltroOperador, $nome: String, $nomeOperador: FiltroOperador) {
         clienteQuery {
-          pegarClientes {
+          pegarClientes(
+            id: $id,
+            idOperador: $idOperador,
+            ativo: $ativo,
+            ativoOperador: $ativoOperador,
+            nome: $nome,
+            nomeOperador: $nomeOperador
+          ) {
             id
             ativo
             nome
@@ -89,20 +122,40 @@ export class ClienteListagemComponent implements OnInit {
       }
     `;
 
+    console.log(filtroArgs);
+
     this.apollo
       .watchQuery<any>({
         query,
+        variables: filtroArgs,
         fetchPolicy: 'network-only'
       })
       .valueChanges
       .subscribe({
         next: (result) => {
-          this.dataSource = [...result.data.clienteQuery.pegarClientes]
+          this.dataSource = [...result.data.clienteQuery.pegarClientes];
         },
         error: (err) => {
           console.error('Erro Apollo GraphQL:', err);
         }
       });
+  }
+
+  aplicarFiltro(filtro: any): void {
+    const index = this.filtrosAtivos.findIndex(f => f.campo === filtro.campo);
+
+    if (index > -1) {
+      this.filtrosAtivos[index] = filtro;
+    } else {
+      this.filtrosAtivos.push(filtro);
+    }
+
+    this.carregarClientes(this.filtrosAtivos);
+  }
+
+  limparFiltros(): void {
+    this.filtrosAtivos = [];
+    this.carregarClientes();
   }
 
   abrirModalEdicao(item: any): void {
@@ -111,7 +164,7 @@ export class ClienteListagemComponent implements OnInit {
 
     this.http.get(`http://localhost:5250/api/cliente/${id}`).subscribe({
       next: (cliente: any) => {
-        this.modalTitle = 'Editar Cliente',
+        this.modalTitle = 'Editar Cliente';
         this.modalComponent = ClienteCadastroComponent;
         this.showModal = true;
         this.modalInjector = Injector.create({
@@ -137,7 +190,7 @@ export class ClienteListagemComponent implements OnInit {
         this.notificationService.show('Cliente deletado com sucesso!', 'success');
         this.carregarClientes();
       },
-      error: (error) => {
+      error: () => {
         this.notificationService.show('Erro ao deletar cliente!', 'error');
       }
     });
@@ -164,5 +217,18 @@ export class ClienteListagemComponent implements OnInit {
 
   onRowClick(row: any): void {
     this.selectedRow = this.selectedRow === row ? null : row;
+  }
+
+  removerFiltro(index: number): void {
+    this.filtrosAtivos.splice(index, 1);
+    this.carregarClientes(this.filtrosAtivos);
+  }
+
+  onFiltroExcedido(): void {
+    this.notificationService.show('Limite de 4 filtros atingido!', 'warning');
+  }
+
+  formatarValor(valor: any, tipo: string): string {
+    return formatGenericValue(valor, tipo)
   }
 }

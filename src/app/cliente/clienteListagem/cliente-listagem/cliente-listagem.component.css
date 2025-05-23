@@ -25,3 +25,17 @@
 .btn-recarregar:hover {
   filter: brightness(1.1);
 }
+
+.filtros-ativos {
+  margin: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filtro-tag {
+  color: black;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  padding: 4px 8px;
+}

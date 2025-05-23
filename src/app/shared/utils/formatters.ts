@@ -68,3 +68,15 @@ export function formatDateTime(value: string): string {
 export function removerMascara(valor: string): string {
   return valor.replace(/\D/g, '');
 }
+
+export function formatGenericValue(valor: any, tipo: string): string {
+  if (tipo === 'boolean') {
+    return formatBoolean(valor === true || valor === 'true');
+  }
+
+  if (tipo === 'date') {
+    return formatDate(valor);
+  }
+
+  return valor;
+}

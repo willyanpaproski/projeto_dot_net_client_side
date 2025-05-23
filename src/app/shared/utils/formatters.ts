@@ -80,3 +80,24 @@ export function formatGenericValue(valor: any, tipo: string): string {
 
   return valor;
 }
+
+export function formatarComMascara(valor: string, mascara: string): string {
+  if (!valor) return '';
+
+  let resultado = '';
+  let index = 0;
+
+  for (const m of mascara) {
+    if (m === '0') {
+      if (index < valor.length) {
+        resultado += valor[index++];
+      } else {
+        break;
+      }
+    } else {
+      resultado += m;
+    }
+  }
+
+  return resultado;
+}

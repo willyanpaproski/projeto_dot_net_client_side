@@ -8,7 +8,8 @@ import {
   formatCep,
   formatCelular,
   formatCpfCnpj,
-  formatGenericValue
+  formatGenericValue,
+  formatarComMascara
 } from '../../../shared/utils/formatters';
 import { ClienteCadastroComponent } from '../../clienteCadastro/cliente-cadastro/cliente-cadastro.component';
 import { ModalComponent } from '../../../modal/modal.component';
@@ -18,6 +19,7 @@ import { Injector } from '@angular/core';
 import { CLIENTE_DATA, FECHAR_MODAL } from '../../clienteCadastro/cliente-cadastro/cliente-cadastro.component';
 import { NotificationService } from '../../../shared/notification/notification.service';
 import { CampoFiltro, FiltroDataTableComponent } from '../../../shared/filtro-data-table/filtro-data-table/filtro-data-table.component';
+import { formatarOperadoresFiltroAplicado, pegarLabelFiltroAplicado } from '../../../shared/utils/filterComponentHelpers';
 
 @Component({
   selector: 'app-cliente-listagem',
@@ -41,6 +43,7 @@ export class ClienteListagemComponent implements OnInit {
     { key: 'tipoPessoa', label: 'Tipo de Pessoa', width: '100px' },
     { key: 'telefone', label: 'Telefone', width: '150px', format: formatCelular },
     { key: 'celular', label: 'Celular', width: '150px', format: formatCelular },
+    { key: 'email', label: 'Email', width: '200px' },
     { key: 'cep', label: 'CEP', width: '150px', format: formatCep },
     { key: 'endereco', label: 'Endereço', width: '200px' },
     { key: 'cidade', label: 'Cidade', width: '100px' },
@@ -55,7 +58,19 @@ export class ClienteListagemComponent implements OnInit {
     { label: 'ID', value: 'id', tipo: 'number' },
     { label: 'Ativo', value: 'ativo', tipo: 'boolean' },
     { label: 'Nome', value: 'nome', tipo: 'string' },
-    { label: 'Data de Nascimento', value: 'dataNascimento', tipo: 'date' }
+    { label: 'CPF/CNPJ', value: 'cpfCnpj', tipo: 'string' },
+    { label: 'Data de Nascimento', value: 'dataNascimento', tipo: 'date' },
+    { label: 'Telefone', value: 'telefone', tipo: 'string', mascara: '(00) 00000-0000' },
+    { label: 'Celular', value: 'celular', tipo: 'string', mascara: '(00) 00000-0000' },
+    { label: 'Email', value: 'email', tipo: 'string' },
+    { label: 'CEP', value: 'cep', tipo: 'string', mascara: '00000-000' },
+    { label: 'Endereco', value: 'endereco', tipo: 'string' },
+    { label: 'Cidade', value: 'cidade', tipo: 'string' },
+    { label: 'Bairro', value: 'bairro', tipo: 'string' },
+    { label: 'Rua', value: 'rua', tipo: 'string' },
+    { label: 'Estado', value: 'estado', tipo: 'string' },
+    { label: 'Criado em', value: 'createdAt', tipo: 'string' },
+    { label: 'Atualizado em', value: 'updatedAt', tipo: 'string' }
   ];
 
   filtrosAtivos: any[] = [];
@@ -81,17 +96,33 @@ export class ClienteListagemComponent implements OnInit {
     const filtroArgs: any = {};
 
     filtros?.forEach(filtro => {
-      // Converte o ID para número se o campo for 'id'
       if (filtro.campo === 'id') {
         filtroArgs[filtro.campo] = Number(filtro.valor);
       } else {
         filtroArgs[filtro.campo] = filtro.valor;
       }
-      filtroArgs[`${filtro.campo}Operador`] = filtro.operador; // Adiciona o operador do filtro
+      filtroArgs[`${filtro.campo}Operador`] = filtro.operador;
     });
 
     const query = gql`
-      query ($id: Long, $idOperador: FiltroOperador, $ativo: Boolean, $ativoOperador: FiltroOperador, $nome: String, $nomeOperador: FiltroOperador) {
+      query (
+      $id: Long, $idOperador: FiltroOperador,
+      $ativo: Boolean, $ativoOperador: FiltroOperador,
+      $nome: String, $nomeOperador: FiltroOperador,
+      $cpfCnpj: String, $cpfCnpjOperador: FiltroOperador,
+      $dataNascimento: String, $dataNascimentoOperador: FiltroOperador,
+      $telefone: String, $telefoneOperador: FiltroOperador,
+      $celular: String, $celularOperador: FiltroOperador,
+      $email: String, $emailOperador: FiltroOperador,
+      $cep: String, $cepOperador: FiltroOperador,
+      $endereco: String, $enderecoOperador: FiltroOperador,
+      $cidade: String, $cidadeOperador: FiltroOperador,
+      $bairro: String, $bairroOperador: FiltroOperador,
+      $rua: String, $ruaOperador: FiltroOperador,
+      $estado: String, $estadoOperador: FiltroOperador,
+      $createdAt: String, $createdAtOperador: FiltroOperador,
+      $updatedAt: String, $updatedAtOperador: FiltroOperador
+      ) {
         clienteQuery {
           pegarClientes(
             id: $id,
@@ -99,7 +130,33 @@ export class ClienteListagemComponent implements OnInit {
             ativo: $ativo,
             ativoOperador: $ativoOperador,
             nome: $nome,
-            nomeOperador: $nomeOperador
+            nomeOperador: $nomeOperador,
+            cpfCnpj: $cpfCnpj,
+            cpfCnpjOperador: $cpfCnpjOperador,
+            dataNascimento: $dataNascimento,
+            dataNascimentoOperador: $dataNascimentoOperador,
+            telefone: $telefone,
+            telefoneOperador: $telefoneOperador,
+            celular: $celular,
+            celularOperador: $celularOperador,
+            email: $email,
+            emailOperador: $emailOperador,
+            cep: $cep,
+            cepOperador: $cepOperador,
+            endereco: $endereco,
+            enderecoOperador: $enderecoOperador,
+            cidade: $cidade,
+            cidadeOperador: $cidadeOperador,
+            bairro: $bairro,
+            bairroOperador: $bairroOperador,
+            rua: $rua,
+            ruaOperador: $ruaOperador,
+            estado: $estado,
+            estadoOperador: $estadoOperador,
+            createdAt: $createdAt,
+            createdAtOperador: $createdAtOperador,
+            updatedAt: $updatedAt,
+            updatedAtOperador: $updatedAtOperador
           ) {
             id
             ativo
@@ -109,6 +166,7 @@ export class ClienteListagemComponent implements OnInit {
             tipoPessoa
             telefone
             celular
+            email
             cep
             endereco
             cidade
@@ -121,8 +179,6 @@ export class ClienteListagemComponent implements OnInit {
         }
       }
     `;
-
-    console.log(filtroArgs);
 
     this.apollo
       .watchQuery<any>({
@@ -228,7 +284,21 @@ export class ClienteListagemComponent implements OnInit {
     this.notificationService.show('Limite de 4 filtros atingido!', 'warning');
   }
 
-  formatarValor(valor: any, tipo: string): string {
+  pegarLabel(campo: any): string {
+    return pegarLabelFiltroAplicado(campo, this.camposFiltro)
+  }
+
+  formatarOperador(operador: any): string {
+    return formatarOperadoresFiltroAplicado(operador);
+  }
+
+  formatarValor(valor: any, tipo: string, campo: string): string {
+    const campoDefinido = this.camposFiltro.find(f => f.value === campo);
+
+    if (campoDefinido?.mascara) {
+      return formatarComMascara(valor, campoDefinido.mascara);
+    }
+
     return formatGenericValue(valor, tipo)
   }
 }

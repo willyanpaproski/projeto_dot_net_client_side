@@ -22,9 +22,9 @@
 
 <div class="filtros-ativos">
   <span *ngFor="let filtro of filtrosAtivos; let i = index" class="filtro-tag">
-    {{ filtro.campo.toUpperCase() }}
-    {{ filtro.operador }}
-    {{ formatarValor(filtro.valor, filtro.tipo) }}
+    {{ pegarLabel(filtro.campo) }}
+    {{ formatarOperador(filtro.operador) }}
+    {{ formatarValor(filtro.valor, filtro.tipo, filtro.campo) }}
     <button (click)="removerFiltro(i)">
       <i class="pi pi-times"></i>
     </button>

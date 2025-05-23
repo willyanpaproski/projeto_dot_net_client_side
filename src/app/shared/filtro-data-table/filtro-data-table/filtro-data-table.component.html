@@ -10,7 +10,8 @@
   <input *ngIf="campoSelecionado?.tipo !== 'boolean' && campoSelecionado?.tipo != 'date'"
          [(ngModel)]="valor"
          [type]="campoSelecionado?.tipo === 'number' ? 'number' : 'text'"
-         placeholder="Valor" />
+         [attr.placeholder]="campoSelecionado?.mascara || 'Valor'"
+         [mask]="campoSelecionado?.mascara" />
 
   <input *ngIf="campoSelecionado?.tipo == 'date'"
          [(ngModel)]="valor"

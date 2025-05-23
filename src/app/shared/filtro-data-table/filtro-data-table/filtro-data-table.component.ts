@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NgxMaskDirective } from 'ngx-mask';
+import { removerMascara } from '../../utils/formatters';
 
 export type CampoTipo = 'string' | 'number' | 'boolean' | 'date';
 
@@ -8,12 +10,13 @@ export interface CampoFiltro {
   label: string;
   value: string;
   tipo: CampoTipo;
+  mascara?: string;
 }
 
 @Component({
   selector: 'app-filtro-data-table',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgxMaskDirective],
   templateUrl: './filtro-data-table.component.html',
   styleUrls: ['./filtro-data-table.component.css']
 })
@@ -97,12 +100,12 @@ export class FiltroDataTableComponent implements OnChanges {
   }
 
   onCampoSelecionadoChange(): void {
-  this.valor = '';
+    this.valor = '';
 
-  if (this.campoSelecionado) {
-    this.operadorSelecionado = this.operadoresPorTipo[this.campoSelecionado.tipo][0];
-  } else {
-    this.operadorSelecionado = '';
+    if (this.campoSelecionado) {
+      this.operadorSelecionado = this.operadoresPorTipo[this.campoSelecionado.tipo][0];
+    } else {
+      this.operadorSelecionado = '';
+    }
   }
-}
 }

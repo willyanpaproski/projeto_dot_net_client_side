@@ -20,3 +20,18 @@ th {
 tr.selected {
   background-color: #e0f3ff;
 }
+
+
+.mat-cell, .mat-header-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mat-column-campos {
+  max-width: 400px;
+  width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -101,3 +101,40 @@ export function formatarComMascara(valor: string, mascara: string): string {
 
   return resultado;
 }
+
+export function converterObejetoParaRequisicao(campos: string): any {
+  const regex = /(\w+)\s*=\s*([^,}]+)/g;
+  const result: any = {};
+  let match;
+
+  const camposIgnorados = ['id', 'createdAt', 'updatedAt'];
+
+  while ((match = regex.exec(campos)) !== null) {
+    const keyOriginal = match[1];
+    const key = keyOriginal.charAt(0).toLowerCase() + keyOriginal.slice(1);
+
+    if (camposIgnorados.includes(key)) continue;
+
+    let value: any = match[2].trim();
+
+    if (value === 'True' || value === 'true') {
+      value = true;
+    } else if (value === 'False' || value === 'false') {
+      value = false;
+    } else if (/\d{2}\/\d{2}\/\d{4}( \d{2}:\d{2}:\d{2})?/.test(value)) {
+      const parts = value.split(/\/| |:/);
+      const [day, month, year] = parts;
+      value = `${year}-${month}-${day}`;
+    } else if (key === 'cep') {
+      // Tratamento específico para o CEP
+      value = value.replace(/-/g, ''); // Remove o hífen
+    } else if (/^\d+$/.test(value)) {
+      value = value.startsWith('0') ? value : Number(value);
+    }
+
+    result[key] = value;
+  }
+
+  return result;
+}
+

@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { DataTableComponent } from '../../shared/data-table/data-table.component';
 import { CommonModule } from '@angular/common';
-import { formatarComMascara, formatDateTime, formatGenericValue } from '../../shared/utils/formatters';
+import { converterObejetoParaRequisicao, formatarComMascara, formatDateTime, formatGenericValue } from '../../shared/utils/formatters';
 import { Apollo, gql } from 'apollo-angular';
 import { NotificationService } from '../../shared/notification/notification.service';
 import { formatarOperadoresFiltroAplicado, pegarLabelFiltroAplicado } from '../../shared/utils/filterComponentHelpers';
 import { CampoFiltro, FiltroDataTableComponent } from '../../shared/filtro-data-table/filtro-data-table/filtro-data-table.component';
+import { HttpClient } from '@angular/common/http';
+import { table } from 'console';
 
 @Component({
   selector: 'app-logs-usuarios-listagem',
@@ -24,7 +26,7 @@ export class LogsUsuariosListagemComponent implements OnInit {
     { key: "tabela", label: "Tabela", width: "100px" },
     { key: "tipoLog", label: "Tipo do Log", width: "100px" },
     { key: "usuario", label: "Usuário", width: "150px" },
-    { key: "campos", label: "Campos", width: "200px" },
+    { key: "campos", label: "Campos", width: "400px" },
     { key: "createdAt", label: "Horário de execução", width: "150px", format: formatDateTime }
   ];
 
@@ -42,6 +44,7 @@ export class LogsUsuariosListagemComponent implements OnInit {
 
   constructor(
     private apollo: Apollo,
+    private http: HttpClient,
     private notificationService: NotificationService
   ) {}
 
@@ -126,6 +129,36 @@ export class LogsUsuariosListagemComponent implements OnInit {
   limparFiltros(): void {
     this.filtrosAtivos = [];
     this.carregarLogs();
+  }
+
+  restaurar(item?: any) {
+    if (item?.tipoLog !== "DELETOU") {
+      this.notificationService.show('Somente registros deletados podem ser restaurados', 'info');
+    }
+
+    try {
+      const tabela = item?.tabela?.toLowerCase();
+      const camposStr = item?.campos;
+
+      if (!tabela || !camposStr) {
+        this.notificationService.show('Dados insuficientes para restauração', 'error');
+      }
+
+      const camposFormatados = converterObejetoParaRequisicao(camposStr);
+
+      this.http.post(`http://localhost:5250/api/${tabela}`, camposFormatados).subscribe({
+        next: () => {
+          this.notificationService.show('Registro restaurado com sucesso!', 'success');
+        },
+        error: (error) => {
+          console.log(camposFormatados);
+          console.log(error);
+          this.notificationService.show('Não foi possível restaurar o registro', 'error');
+        }
+      });
+    } catch (error) {
+      this.notificationService.show('Não foi possível restaurar o registro', 'error');
+    }
   }
 
   onRowClick(row: any): void {

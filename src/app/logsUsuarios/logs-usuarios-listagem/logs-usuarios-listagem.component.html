@@ -1,3 +1,10 @@
+<div class="toolbar">
+  <button class="btn-restaurar" [disabled]="!selectedRow" (click)="restaurar(selectedRow)">Restaurar</button>
+  <button class="btn-recarregar" (click)="carregarLogs(filtrosAtivos)">
+    <i class="pi pi-sync"></i>
+  </button>
+</div>
+
 <app-filtro-data-table
   [campos]="camposFiltro"
   [filtrosAtivos]="filtrosAtivos"

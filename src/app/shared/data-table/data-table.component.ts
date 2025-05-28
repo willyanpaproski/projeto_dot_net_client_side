@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-data-table',
@@ -11,7 +12,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
     CommonModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatTooltipModule
   ],
   templateUrl: './data-table.component.html',
   styleUrl: './data-table.component.css'

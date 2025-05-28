@@ -4,9 +4,7 @@
   margin-bottom: 15px;
 }
 
-.btn-novo,
-.btn-editar,
-.btn-deletar,
+.btn-restaurar,
 .btn-recarregar {
   padding: 8px 16px;
   border: none;
@@ -19,11 +17,6 @@
 
 .btn-recarregar {
   background-color: #2f3b52;
-}
-
-.btn-novo:hover,
-.btn-recarregar:hover {
-  filter: brightness(1.1);
 }
 
 .filtros-ativos {

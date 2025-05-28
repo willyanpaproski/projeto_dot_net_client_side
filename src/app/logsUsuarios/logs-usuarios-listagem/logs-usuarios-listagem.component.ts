@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { DataTableComponent } from '../../shared/data-table/data-table.component';
 import { CommonModule } from '@angular/common';
 import { converterObejetoParaRequisicao, formatarComMascara, formatDateTime, formatGenericValue } from '../../shared/utils/formatters';
@@ -8,6 +8,8 @@ import { formatarOperadoresFiltroAplicado, pegarLabelFiltroAplicado } from '../.
 import { CampoFiltro, FiltroDataTableComponent } from '../../shared/filtro-data-table/filtro-data-table/filtro-data-table.component';
 import { HttpClient } from '@angular/common/http';
 import { table } from 'console';
+import { FECHAR_MODAL, LOG_DATA, LogsUsuariosVisualizacaoComponent, VIEW_MODE } from '../logs-usuarios-visualizacao/logs-usuarios-visualizacao.component';
+import { ModalComponent } from '../../modal/modal.component';
 
 @Component({
   selector: 'app-logs-usuarios-listagem',
@@ -15,7 +17,8 @@ import { table } from 'console';
   imports: [
     DataTableComponent,
     CommonModule,
-    FiltroDataTableComponent
+    FiltroDataTableComponent,
+    ModalComponent
   ],
   templateUrl: './logs-usuarios-listagem.component.html',
   styleUrl: './logs-usuarios-listagem.component.css'
@@ -41,10 +44,15 @@ export class LogsUsuariosListagemComponent implements OnInit {
   filtrosAtivos: any[] = [];
   dataSource: any[] = [];
   selectedRow: any = null;
+  modalComponent: any;
+  modalTitle = '';
+  showModal = false;
+  modalInjector: Injector | undefined;
 
   constructor(
     private apollo: Apollo,
     private http: HttpClient,
+    private injector: Injector,
     private notificationService: NotificationService
   ) {}
 
@@ -150,15 +158,41 @@ export class LogsUsuariosListagemComponent implements OnInit {
         next: () => {
           this.notificationService.show('Registro restaurado com sucesso!', 'success');
         },
-        error: (error) => {
-          console.log(camposFormatados);
-          console.log(error);
+        error: () => {
           this.notificationService.show('Não foi possível restaurar o registro', 'error');
         }
       });
     } catch (error) {
       this.notificationService.show('Não foi possível restaurar o registro', 'error');
     }
+  }
+
+  abrirModalVisualizacao(item?: any): void {
+    const id = item?.id;
+    if (!id) return;
+
+    this.http.get(`http://localhost:5250/api/log/${id}`).subscribe({
+      next: (log: any) => {
+        this.modalTitle = 'Visualizar Log';
+        this.modalComponent = LogsUsuariosVisualizacaoComponent;
+        this.showModal = true;
+        this.modalInjector = Injector.create({
+          providers: [
+            { provide: LOG_DATA, useValue: log },
+            { provide: FECHAR_MODAL, useValue: this.fecharModal.bind(this) },
+            { provide: VIEW_MODE, useValue: true }
+          ],
+          parent: this.injector
+        });
+      }
+    });
+  }
+
+  fecharModal(): void {
+    this.showModal = false;
+    this.modalInjector = undefined;
+    this.selectedRow = null;
+    this.carregarLogs();
   }
 
   onRowClick(row: any): void {

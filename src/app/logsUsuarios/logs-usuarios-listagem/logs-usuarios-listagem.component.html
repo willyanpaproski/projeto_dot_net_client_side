@@ -1,9 +1,14 @@
 <div class="toolbar">
   <button class="btn-restaurar" [disabled]="!selectedRow" (click)="restaurar(selectedRow)">Restaurar</button>
+  <button class="btn-visualizar" [disabled]="!selectedRow" (click)="abrirModalVisualizacao(selectedRow)">Visualizar</button>
   <button class="btn-recarregar" (click)="carregarLogs(filtrosAtivos)">
     <i class="pi pi-sync"></i>
   </button>
 </div>
+
+<app-modal *ngIf="showModal" [title]="modalTitle" (closeModal)="fecharModal()">
+  <ng-container *ngComponentOutlet="modalComponent; injector: modalInjector"></ng-container>
+</app-modal>
 
 <app-filtro-data-table
   [campos]="camposFiltro"

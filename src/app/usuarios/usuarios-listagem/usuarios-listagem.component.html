@@ -1,0 +1,40 @@
+<div class="toolbar">
+  <button class="btn-novo" (click)="abrirModalNovoUsuario()">Novo</button>
+  <button class="btn-editar" [disabled]="!selectedRow" (click)="abrirModalEdicao(selectedRow)">Editar</button>
+  <button class="btn-deletar" [disabled]="!selectedRow" (click)="deletar(selectedRow)">Deletar</button>
+  <button class="btn-recarregar" (click)="carregarUsuarios(filtrosAtivos)">
+    <i class="pi pi-sync"></i>
+  </button>
+</div>
+
+<app-modal *ngIf="showModal" [title]="modalTitle" (closeModal)="fecharModal()">
+  <ng-container *ngComponentOutlet="modalComponent; injector: modalInjector"></ng-container>
+</app-modal>
+
+<app-filtro-data-table
+  [campos]="camposFiltro"
+  [filtrosAtivos]="filtrosAtivos"
+  [quantidadeMaximaFiltros]="4"
+  (filtroAplicado)="aplicarFiltro($event)"
+  (filtrosLimpos)="limparFiltros()"
+  (filtroExcedido)="onFiltroExcedido()"
+></app-filtro-data-table>
+
+<div class="filtros-ativos">
+  <span *ngFor="let filtro of filtrosAtivos; let i = index" class="filtro-tag">
+    {{ pegarLabel(filtro.campo) }}
+    {{ formatarOperador(filtro.operador) }}
+    {{ formatarValor(filtro.valor, filtro.tipo, filtro.campo) }}
+    <button (click)="removerFiltro(i)">
+      <i class="pi pi-times"></i>
+    </button>
+  </span>
+</div>
+
+<app-data-table
+  [displayedColumns]="displayedColumns"
+  [dataSource]="dataSource"
+  [selectedRowInput]="selectedRow"
+  (rowClick)="onRowClick($event)"
+  (rowDoubleClick)="abrirModalEdicao($event)">
+</app-data-table>

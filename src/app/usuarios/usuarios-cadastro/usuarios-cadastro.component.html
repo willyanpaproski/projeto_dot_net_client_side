@@ -1,0 +1,16 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <button type="submit">
+    {{ usuario ? 'Salvar' : 'Salvar' }}
+  </button>
+
+  <label>ID: <input formControlName="id" /></label><br />
+  <label>Email: <input formControlName="email" /></label><br />
+  <label>Senha: <input type="password" formControlName="senhaHash" /></label><br />
+  <label>Último Acesso: <input type="date" formControlName="lastLoggedIn" /></label><br />
+  <label>Ativo:
+    <select formControlName="ativo">
+      <option [ngValue]="true">Sim</option>
+      <option [ngValue]="false">Não</option>
+    </select>
+  </label><br />
+</form>

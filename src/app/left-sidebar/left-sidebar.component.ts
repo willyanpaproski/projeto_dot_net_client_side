@@ -8,6 +8,7 @@ import { ClienteListagemComponent } from '../cliente/clienteListagem/cliente-lis
 import { EmpresaListagemComponent } from '../empresa/empresaListagem/empresa-listagem/empresa-listagem.component';
 import { FilialListagemComponent } from '../filial/filialListagem/filial-listagem/filial-listagem.component';
 import { LogsUsuariosListagemComponent } from '../logsUsuarios/logs-usuarios-listagem/logs-usuarios-listagem.component';
+import { UsuariosListagemComponent } from '../usuarios/usuarios-listagem/usuarios-listagem.component';
 
 interface SidebarItem {
   label: string;
@@ -63,7 +64,8 @@ export class LeftSidebarComponent {
       children: [
         { label: 'Clientes', routeLink: 'clientes', component: ClienteListagemComponent },
         { label: 'Empresas', routeLink: 'empresas', component: EmpresaListagemComponent },
-        { label: 'Filiais', routeLink: 'filiais', component: FilialListagemComponent }
+        { label: 'Filiais', routeLink: 'filiais', component: FilialListagemComponent },
+        { label: 'Usuários', routeLink: 'usuarios', component: UsuariosListagemComponent }
       ]
     },
     {

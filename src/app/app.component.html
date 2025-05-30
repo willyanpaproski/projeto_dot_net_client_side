@@ -1,7 +1,9 @@
 <app-notification></app-notification>
 
-<app-left-sidebar [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+<app-left-sidebar *ngIf="isAuthenticated()" [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
 (changeIsLeftSidebarCollapsed)="changeIsLeftSidebarCollapsed($event)"/>
 
-<app-main [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
+<app-main *ngIf="isAuthenticated()" [isLeftSidebarCollapsed]="isLeftSidebarCollapsed()"
 [screenWidth]="screenWidth()"/>
+
+<router-outlet></router-outlet>

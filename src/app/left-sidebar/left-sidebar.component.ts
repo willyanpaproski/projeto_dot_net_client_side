@@ -9,6 +9,8 @@ import { EmpresaListagemComponent } from '../empresa/empresaListagem/empresa-lis
 import { FilialListagemComponent } from '../filial/filialListagem/filial-listagem/filial-listagem.component';
 import { LogsUsuariosListagemComponent } from '../logsUsuarios/logs-usuarios-listagem/logs-usuarios-listagem.component';
 import { UsuariosListagemComponent } from '../usuarios/usuarios-listagem/usuarios-listagem.component';
+import { AuthService } from '../auth/auth.service';
+import { NotificationService } from '../shared/notification/notification.service';
 
 interface SidebarItem {
   label: string;
@@ -27,6 +29,10 @@ interface SidebarItem {
 export class LeftSidebarComponent {
   @Input() isLeftSidebarCollapsed: boolean = false;
   @Output() changeIsLeftSidebarCollapsed = new EventEmitter<boolean>();
+
+  constructor(
+    private authService: AuthService
+  ) {}
 
   selectedModule: string | null = null;
   showModal = false;
@@ -49,6 +55,10 @@ export class LeftSidebarComponent {
 
   closeModal() {
     this.showModal = false;
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
   items: SidebarItem[] = [

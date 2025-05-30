@@ -201,3 +201,39 @@
 .sidenav.sidenav-collapsed .sidenav-nav-sublink .sidenav-link-text {
   opacity: 0;
 }
+
+.btn-logout {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #d1d1d1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 14px;
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  transition: background-color 0.3s ease;
+  border-radius: 0.625rem;
+  margin-bottom: 50px;
+}
+
+.btn-logout:hover {
+  background-color: #4e5b77;
+  color: white;
+}
+
+.btn-logout i {
+  font-size: 20px;
+  margin-right: 0.5rem;
+}
+
+.sidenav-collapsed .btn-logout span {
+  display: none;
+}
+
+.sidenav-collapsed .btn-logout {
+  justify-content: center;
+}

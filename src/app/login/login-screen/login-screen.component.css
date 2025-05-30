@@ -1,0 +1,79 @@
+.login-page {
+  height: 100vh;
+  display: flex;
+  justify-content: right;
+  align-items: right;
+  background-color: #1f2d3d;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-image: url('https://lh3.google.com/u/0/d/1vN4c0svnui3lNXP__iB_bnBvmNcpm8SQ=w1920-h907-iv1?auditContext=prefetch');
+}
+
+.login-card {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 50px;
+  background-color: #ffffff;
+  padding: 2.5rem 3rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 350px;
+  height: 450px;
+  text-align: center;
+}
+
+.login-card h2 {
+  color: #1f2d3d;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.login-card input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.login-card button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.login-card button:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.login-card button:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #e53e3e;
+  font-size: 0.85rem;
+  text-align: left;
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.error-msg {
+  color: #e53e3e;
+  margin-top: 1rem;
+}

@@ -1,0 +1,34 @@
+<div class="login-page">
+  <div class="login-card">
+    <h2>Bem-vindo</h2>
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        placeholder="E-mail"
+        required
+        #emailInput="ngModel"
+      />
+      <div class="error" *ngIf="emailInput.invalid && emailInput.touched">
+        E-mail é obrigatório
+      </div>
+
+      <input
+        type="password"
+        name="senha"
+        [(ngModel)]="senha"
+        placeholder="Senha"
+        required
+        #senhaInput="ngModel"
+      />
+      <div class="error" *ngIf="senhaInput.invalid && senhaInput.touched">
+        Senha é obrigatória
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+    </form>
+
+    <p class="error-msg" *ngIf="erro">{{ erro }}</p>
+  </div>
+</div>

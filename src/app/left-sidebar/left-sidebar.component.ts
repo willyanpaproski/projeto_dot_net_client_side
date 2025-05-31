@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ModalComponent } from '../modal/modal.component';
 import { ClienteCadastroComponent } from '../cliente/clienteCadastro/cliente-cadastro/cliente-cadastro.component';
@@ -26,7 +26,7 @@ interface SidebarItem {
   templateUrl: './left-sidebar.component.html',
   styleUrls: ['./left-sidebar.component.css']
 })
-export class LeftSidebarComponent {
+export class LeftSidebarComponent implements OnInit {
   @Input() isLeftSidebarCollapsed: boolean = false;
   @Output() changeIsLeftSidebarCollapsed = new EventEmitter<boolean>();
 
@@ -37,7 +37,20 @@ export class LeftSidebarComponent {
   selectedModule: string | null = null;
   showModal = false;
   modalTitle: string = '';
-  modalComponent: any; // para aceitar qualquer componente sem erro de tipo
+  modalComponent: any;
+  nomeUsuarioLogado = '';
+
+  ngOnInit(): void {
+    const usuarioData = localStorage.getItem('usuario');
+    if (usuarioData) {
+      try {
+        const usuario = JSON.parse(usuarioData);
+        this.nomeUsuarioLogado = usuario.nomeUsuario;
+      } catch (error) {
+        console.error('Erro ao analisar JSON do usuário:', error);
+      }
+    }
+  }
 
   toggleColapse(): void {
     this.changeIsLeftSidebarCollapsed.emit(!this.isLeftSidebarCollapsed);

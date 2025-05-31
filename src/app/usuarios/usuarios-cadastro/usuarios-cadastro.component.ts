@@ -30,6 +30,7 @@ export class UsuariosCadastroComponent implements OnInit {
     this.form = this.fb.group({
       id: [this.usuario?.id ?? null],
       ativo: [this.usuario?.ativo ?? true],
+      nomeUsuario: [this.usuario?.nomeUsuario ?? ""],
       email: [this.usuario?.email ?? ""],
       senhaHash: [this.usuario?.senhaHash ?? ""],
       lastLoggedIn: [this.usuario?.lastLoggedIn ?? ""]

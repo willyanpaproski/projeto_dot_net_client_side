@@ -26,6 +26,7 @@ export class UsuariosListagemComponent implements OnInit {
   displayedColumns = [
     { key: 'id', label: 'ID', width: '80px' },
     { key: 'ativo', label: 'Ativo', width: '80px', format: formatBoolean },
+    { key: 'nomeUsuario', label: 'Nome do usuário', width: '200px' },
     { key: 'email', label: 'Email', width: '200px' },
     { key: 'lastLoggedIn', label: 'Último Acesso', width: '150px', format: formatDateTime },
     { key: 'createdAt', label: 'Criado em', width: '150px', format: formatDateTime },
@@ -36,6 +37,7 @@ export class UsuariosListagemComponent implements OnInit {
     { label: 'ID', value: 'id', tipo: 'number' },
     { label: 'Ativo', value: 'ativo', tipo: 'boolean' },
     { label: 'Email', value: 'email', tipo: 'string' },
+    { label: 'Nome do usuário', value: 'nomeUsuario', tipo: 'string' },
     { label: 'Último Acesso', value: 'lastLoggedIn', tipo: 'string' },
     { label: 'Criado em', value: 'createdAt', tipo: 'string' },
     { label: 'Atualizado em', value: 'updatedAt', tipo: 'string' }
@@ -77,6 +79,7 @@ export class UsuariosListagemComponent implements OnInit {
         $id: Long, $idOperador: FiltroOperador,
         $ativo: Boolean, $ativoOperador: FiltroOperador,
         $email: String, $emailOperador: FiltroOperador,
+        $nomeUsuario: String, $nomeUsuarioOperador: FiltroOperador,
         $lastLoggedIn: String, $lastLoggedInOperador: FiltroOperador,
         $createdAt: String, $createdAtOperador: FiltroOperador,
         $updatedAt: String, $updatedAtOperador: FiltroOperador
@@ -86,12 +89,14 @@ export class UsuariosListagemComponent implements OnInit {
             id: $id, idOperador: $idOperador,
             ativo: $ativo, ativoOperador: $ativoOperador,
             email: $email, emailOperador: $emailOperador,
+            nomeUsuario: $nomeUsuario, nomeUsuarioOperador: $nomeUsuarioOperador,
             lastLoggedIn: $lastLoggedIn, lastLoggedInOperador: $lastLoggedInOperador,
             createdAt: $createdAt, createdAtOperador: $createdAtOperador,
             updatedAt: $updatedAt, updatedAtOperador: $updatedAtOperador
           ) {
             id
             ativo
+            nomeUsuario
             email
             lastLoggedIn
             createdAt

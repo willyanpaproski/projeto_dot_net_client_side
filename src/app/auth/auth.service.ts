@@ -21,8 +21,10 @@ export class AuthService {
   login(email: string, senha: string) {
     return this.http.post<any>('http://localhost:5250/api/usuario/login', { email, senha }).pipe(
       tap(response => {
+        console.log(response.usuario);
         if (this.isLocalStorageAvailable()) {
           localStorage.setItem(this.tokenKey, response.token);
+          localStorage.setItem('usuario', JSON.stringify(response.usuario));
         }
       })
     );

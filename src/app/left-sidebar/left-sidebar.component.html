@@ -45,8 +45,11 @@
     <ng-container *ngComponentOutlet="modalComponent"></ng-container>
   </app-modal>
 
-    <button class="btn-logout" (click)="logout()" [title]="!isLeftSidebarCollapsed ? 'Logout' : ''">
-      <i class="pi pi-power-off"></i>
-      <span *ngIf="!isLeftSidebarCollapsed">Logout</span>
+  <div class="usuario-data">
+    <i class="pi pi-user"></i> {{ nomeUsuarioLogado }}
+  </div>
+  <button class="btn-logout" (click)="logout()" [title]="!isLeftSidebarCollapsed ? 'Logout' : ''">
+    <i class="pi pi-power-off"></i>
+    <span *ngIf="!isLeftSidebarCollapsed">Logout</span>
   </button>
 </div>

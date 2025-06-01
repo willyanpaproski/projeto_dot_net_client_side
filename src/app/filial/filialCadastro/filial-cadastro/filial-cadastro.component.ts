@@ -56,10 +56,12 @@ export class FilialCadastroComponent implements OnInit {
       observacoes: [this.filial?.observacoes ?? ''],
       empresaId: [this.filial?.empresaId ?? null]
     });
+
+    this.userForm.get('id')?.disable();
   }
 
   onSubmit(): void {
-    const formData = this.userForm.value;
+    const formData = this.userForm.getRawValue();
 
     const payload = {
       ...formData,

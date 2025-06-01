@@ -57,6 +57,8 @@ export class ClienteCadastroComponent implements OnInit {
       filialId: [this.cliente?.filialId ?? null]
     });
 
+    this.userForm.get('id')?.disable();
+
     this.setCpfCnpjMask(this.userForm.get('tipoPessoa')?.value);
 
     this.userForm.get('tipoPessoa')?.valueChanges.subscribe((tipo) => {
@@ -75,7 +77,7 @@ export class ClienteCadastroComponent implements OnInit {
   }
 
   onSubmit() {
-    const formData = this.userForm.value;
+    const formData = this.userForm.getRawValue();
 
     const payload = {
       ...formData,

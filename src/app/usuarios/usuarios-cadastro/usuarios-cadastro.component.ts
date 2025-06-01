@@ -49,8 +49,6 @@ export class UsuariosCadastroComponent implements OnInit {
 
     const isEdit = !!this.usuario?.id;
 
-    console.log(formData);
-
     const request$ = isEdit
     ? this.http.put(`http://localhost:5250/api/usuario/${this.usuario?.id}`, formData)
     : this.http.post('http://localhost:5250/api/usuario', formData);

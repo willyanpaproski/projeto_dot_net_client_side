@@ -48,10 +48,12 @@ export class EmpresaCadastroComponent implements OnInit {
       cor: [this.empresa?.cor ?? ''],
       observacoes: [this.empresa?.observacoes ?? '']
     });
+
+    this.userForm.get('id')?.disable();
   }
 
   onSubmit(): void {
-    const formData = this.userForm.value;
+    const formData = this.userForm.getRawValue();
 
     const payload = {
       ...formData,

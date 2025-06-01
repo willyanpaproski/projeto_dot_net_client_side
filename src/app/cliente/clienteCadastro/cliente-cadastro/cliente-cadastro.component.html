@@ -3,6 +3,7 @@
     {{ cliente ? 'Salvar' : 'Salvar' }}
   </button>
 
+  <label>ID: <input formControlName="id" /></label><br />
   <label>Nome: <input formControlName="nome" /></label><br />
   <label>CPF/CNPJ: <input formControlName="cpfCnpj" [mask]="cpfCnpjMask" /></label><br />
   <label>Data de Nascimento: <input type="date" formControlName="dataNascimento" /></label><br />

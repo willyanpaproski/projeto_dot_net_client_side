@@ -45,9 +45,11 @@ export class UsuariosCadastroComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const formData = this.form.value;
+    const formData = this.form.getRawValue();
 
     const isEdit = !!this.usuario?.id;
+
+    console.log(formData);
 
     const request$ = isEdit
     ? this.http.put(`http://localhost:5250/api/usuario/${this.usuario?.id}`, formData)

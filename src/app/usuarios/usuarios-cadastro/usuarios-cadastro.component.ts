@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NotificationService } from '../../shared/notification/notification.service';
 import { handleValidationError } from '../../shared/utils/handle-validation-errors';
 import { CommonModule } from '@angular/common';
+import { formatDateTime } from '../../shared/utils/formatters';
 
 export const FECHAR_MODAL = new InjectionToken<any>('FECHAR_MODAL');
 export const USUARIO_DATA = new InjectionToken<any>('USUARIO_DATA');
@@ -27,13 +28,15 @@ export class UsuariosCadastroComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const formattedLastLoggedIn = formatDateTime(this.usuario?.lastLoggedIn);
+
     this.form = this.fb.group({
       id: [this.usuario?.id ?? null],
       ativo: [this.usuario?.ativo ?? true],
       nomeUsuario: [this.usuario?.nomeUsuario ?? ""],
       email: [this.usuario?.email ?? ""],
       senhaHash: [this.usuario?.senhaHash ?? ""],
-      lastLoggedIn: [this.usuario?.lastLoggedIn ?? ""]
+      lastLoggedIn: [formattedLastLoggedIn ?? ""]
     });
 
     if (this.usuario?.id == undefined) {

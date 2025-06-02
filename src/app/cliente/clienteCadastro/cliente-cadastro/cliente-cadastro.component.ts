@@ -53,6 +53,7 @@ export class ClienteCadastroComponent implements OnInit {
       estado: [this.cliente?.estado ?? ''],
       rua: [this.cliente?.rua ?? ''],
       complemento: [this.cliente?.complemento ?? ''],
+      observacoes: [this.cliente?.observacoes ?? ''],
       empresaId: [this.cliente?.empresaId ?? null],
       filialId: [this.cliente?.filialId ?? null]
     });

@@ -50,6 +50,7 @@ export class ClienteListagemComponent implements OnInit {
     { key: 'bairro', label: 'Bairro', width: '100px' },
     { key: 'rua', label: 'Rua', width: '200px' },
     { key: 'estado', label: 'Estado', width: '100px' },
+    { key: 'observacoes', label: 'Observações', width: '200px' },
     { key: 'createdAt', label: 'Criado em', width: '150px', format: formatDateTime },
     { key: 'updatedAt', label: 'Atualizado em', width: '150px', format: formatDateTime }
   ];
@@ -69,6 +70,7 @@ export class ClienteListagemComponent implements OnInit {
     { label: 'Bairro', value: 'bairro', tipo: 'string' },
     { label: 'Rua', value: 'rua', tipo: 'string' },
     { label: 'Estado', value: 'estado', tipo: 'string' },
+    { label: 'Observacoes', value: 'observacoes', tipo: 'string' },
     { label: 'Criado em', value: 'createdAt', tipo: 'string' },
     { label: 'Atualizado em', value: 'updatedAt', tipo: 'string' }
   ];
@@ -120,43 +122,29 @@ export class ClienteListagemComponent implements OnInit {
       $bairro: String, $bairroOperador: FiltroOperador,
       $rua: String, $ruaOperador: FiltroOperador,
       $estado: String, $estadoOperador: FiltroOperador,
+      $observacoes: String, $observacoesOperador: FiltroOperador,
       $createdAt: String, $createdAtOperador: FiltroOperador,
       $updatedAt: String, $updatedAtOperador: FiltroOperador
       ) {
         clienteQuery {
           pegarClientes(
-            id: $id,
-            idOperador: $idOperador,
-            ativo: $ativo,
-            ativoOperador: $ativoOperador,
-            nome: $nome,
-            nomeOperador: $nomeOperador,
-            cpfCnpj: $cpfCnpj,
-            cpfCnpjOperador: $cpfCnpjOperador,
-            dataNascimento: $dataNascimento,
-            dataNascimentoOperador: $dataNascimentoOperador,
-            telefone: $telefone,
-            telefoneOperador: $telefoneOperador,
-            celular: $celular,
-            celularOperador: $celularOperador,
-            email: $email,
-            emailOperador: $emailOperador,
-            cep: $cep,
-            cepOperador: $cepOperador,
-            endereco: $endereco,
-            enderecoOperador: $enderecoOperador,
-            cidade: $cidade,
-            cidadeOperador: $cidadeOperador,
-            bairro: $bairro,
-            bairroOperador: $bairroOperador,
-            rua: $rua,
-            ruaOperador: $ruaOperador,
-            estado: $estado,
-            estadoOperador: $estadoOperador,
-            createdAt: $createdAt,
-            createdAtOperador: $createdAtOperador,
-            updatedAt: $updatedAt,
-            updatedAtOperador: $updatedAtOperador
+            id: $id, idOperador: $idOperador,
+            ativo: $ativo, ativoOperador: $ativoOperador,
+            nome: $nome, nomeOperador: $nomeOperador,
+            cpfCnpj: $cpfCnpj, cpfCnpjOperador: $cpfCnpjOperador,
+            dataNascimento: $dataNascimento, dataNascimentoOperador: $dataNascimentoOperador,
+            telefone: $telefone, telefoneOperador: $telefoneOperador,
+            celular: $celular, celularOperador: $celularOperador,
+            email: $email, emailOperador: $emailOperador,
+            cep: $cep, cepOperador: $cepOperador,
+            endereco: $endereco, enderecoOperador: $enderecoOperador,
+            cidade: $cidade, cidadeOperador: $cidadeOperador,
+            bairro: $bairro, bairroOperador: $bairroOperador,
+            rua: $rua, ruaOperador: $ruaOperador,
+            estado: $estado, estadoOperador: $estadoOperador,
+            observacoes: $observacoes, observacoesOperador: $observacoesOperador,
+            createdAt: $createdAt, createdAtOperador: $createdAtOperador,
+            updatedAt: $updatedAt, updatedAtOperador: $updatedAtOperador
           ) {
             id
             ativo
@@ -173,6 +161,7 @@ export class ClienteListagemComponent implements OnInit {
             bairro
             rua
             estado
+            observacoes
             createdAt
             updatedAt
           }

@@ -11,6 +11,7 @@ import { LogsUsuariosListagemComponent } from '../logsUsuarios/logs-usuarios-lis
 import { UsuariosListagemComponent } from '../usuarios/usuarios-listagem/usuarios-listagem.component';
 import { AuthService } from '../auth/auth.service';
 import { NotificationService } from '../shared/notification/notification.service';
+import { LogsAcessosListagemComponent } from '../logsAcessos/logs-acessos-listagem/logs-acessos-listagem.component';
 
 interface SidebarItem {
   label: string;
@@ -95,7 +96,8 @@ export class LeftSidebarComponent implements OnInit {
       label: 'Logs',
       icon: 'pi pi-chart-scatter',
       children: [
-        { label: 'Logs dos usuários', routeLink: 'logs', component: LogsUsuariosListagemComponent }
+        { label: 'Logs dos usuários', routeLink: 'logs', component: LogsUsuariosListagemComponent },
+        { label: 'Logs de acessos', routeLink: 'logsAcesso', component: LogsAcessosListagemComponent }
       ]
     }
   ];

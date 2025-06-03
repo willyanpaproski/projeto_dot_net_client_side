@@ -7,7 +7,6 @@ import { NotificationService } from '../../shared/notification/notification.serv
 import { formatarOperadoresFiltroAplicado, pegarLabelFiltroAplicado } from '../../shared/utils/filterComponentHelpers';
 import { CampoFiltro, FiltroDataTableComponent } from '../../shared/filtro-data-table/filtro-data-table/filtro-data-table.component';
 import { HttpClient } from '@angular/common/http';
-import { table } from 'console';
 import { FECHAR_MODAL, LOG_DATA, LogsUsuariosVisualizacaoComponent, VIEW_MODE } from '../logs-usuarios-visualizacao/logs-usuarios-visualizacao.component';
 import { ModalComponent } from '../../modal/modal.component';
 

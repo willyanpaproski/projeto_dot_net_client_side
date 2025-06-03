@@ -1,0 +1,27 @@
+<form [formGroup]="form">
+  <label>
+    Id:
+    <input formControlName="id" readonly />
+  </label>
+
+  <label>
+    Tipo do Log:
+    <input formControlName="tipoLogAcesso" readonly />
+  </label>
+
+  <label>
+    Nome do Usuário:
+    <input formControlName="nomeUsuario" readonly />
+  </label>
+
+  <label>
+    Email do Usuário:
+    <input formControlName="emailUsuario" readonly />
+  </label>
+
+  <label>
+    Horário de Acesso:
+    <input [value]="form.get('createdAt')?.value | date: 'dd/MM/yyyy HH:mm:ss'" readonly />
+  </label>
+
+</form>

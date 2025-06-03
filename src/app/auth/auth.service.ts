@@ -21,7 +21,6 @@ export class AuthService {
   login(email: string, senha: string) {
     return this.http.post<any>('http://localhost:5250/api/usuario/login', { email, senha }).pipe(
       tap(response => {
-        console.log(response.usuario);
         if (this.isLocalStorageAvailable()) {
           localStorage.setItem(this.tokenKey, response.token);
           localStorage.setItem('usuario', JSON.stringify(response.usuario));
@@ -33,10 +32,23 @@ export class AuthService {
   logout() {
     if (this.isLocalStorageAvailable()) {
       localStorage.removeItem(this.tokenKey);
+      const usuarioStr = localStorage.getItem('usuario');
+      const usuario = usuarioStr ? JSON.parse(usuarioStr) : null;
+      this.http.post('http://localhost:5250/api/logAcesso', {
+        tipoLogAcesso: 'Logout',
+        usuarioId: usuario.id,
+        usuario: usuario
+      }).subscribe({
+        next: () => {
+          this.router.navigate(['/login']);
+          location.reload();
+          this.notificationService.show('Logout realizado com sucesso!', 'success');
+        },
+        error: () => {
+          this.notificationService.show('Erro ao realizar logout!', 'error');
+        }
+      });
     }
-    this.router.navigate(['/login']);
-    location.reload();
-    this.notificationService.show('Logout realizado com sucesso!', 'success');
   }
 
   isAuthenticated(): boolean {
